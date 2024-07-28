@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "590908710689",
+    "project_id": "cryp-b62c6",
+    "storage_bucket": "cryp-b62c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590908710689:android:bd67b88bc7c1904d74e860",
+        "android_client_info": {
+          "package_name": "com.example.cryp_comm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtNoCG7woq59zDuPwewVXXIaotc31p3Hc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
