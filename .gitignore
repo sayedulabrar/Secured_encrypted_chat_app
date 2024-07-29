@@ -30,6 +30,7 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
+!/build/app/outputs/flutter-apk/app-release.apk
 /build/
 /lib/constant/consts.dart
 # Symbolication related
@@ -42,7 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-!/build/app/outputs/flutter-apk/app-release.apk
+
 # .gitignore
 
 
