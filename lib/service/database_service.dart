@@ -184,6 +184,8 @@ class DatabaseService {
 
           final sortedUserProfiles = userSnapshot.docs
               .map((doc) => doc.data() as Profile)
+              .where((profile) => lastMessageTimestamps.containsKey(profile.userid) &&
+              lastMessageTimestamps[profile.userid] != null)
               .toList();
 
           sortedUserProfiles.sort((a, b) {
@@ -193,10 +195,10 @@ class DatabaseService {
           });
 
           // Return the sorted profiles along with the current timestamp
-          return SortedProfilesData(sortedUserProfiles, DateTime.now());
+          return SortedProfilesData(sortedUserProfiles, DateTime.now(),lastMessageTimestamps);
         } catch (e) {
           print("Error fetching or sorting chats: $e");
-          return SortedProfilesData([], DateTime.now());
+          return SortedProfilesData([], DateTime.now(),{});
         }
       });
     });

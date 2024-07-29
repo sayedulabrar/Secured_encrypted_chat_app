@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import '../models/sortedprofile.dart';
 import '../service/notification_service.dart';
 import '../widget/navigation_drawer.dart';
+import '../widget/optiop_button.dart';
 import '/service/auth_service.dart';
 import '/utils/chat_page.dart';
 import '../models/profile.dart';
@@ -159,7 +160,7 @@ class _HomeState extends State<Home> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _optionButton(
+          optionButton(
             text: '     Users     ',
             isSelected: _showOption1,
             onPressed: () {
@@ -168,7 +169,7 @@ class _HomeState extends State<Home> {
               });
             },
           ),
-          _optionButton(
+          optionButton(
             text: 'Recent Chats',
             isSelected: !_showOption1,
             onPressed: () {
@@ -183,26 +184,7 @@ class _HomeState extends State<Home> {
   }
 
 
-  Widget _optionButton({
-    required String text,
-    required bool isSelected,
-    required VoidCallback onPressed,
-  }) {
-    return TextButton(
-      onPressed: onPressed,
-      style: TextButton.styleFrom(
-        foregroundColor: Colors.black, backgroundColor: Colors.transparent, // Transparent background
-        side: BorderSide(
-          color: isSelected ? Colors.blue : Colors.grey, // Border color
-          width: 2.0, // Border width
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-      ),
-      child: Text(text),
-    );
-  }
+
 
   Widget _buildUI() {
     return SafeArea(
