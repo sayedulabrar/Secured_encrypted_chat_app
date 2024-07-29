@@ -30,7 +30,6 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-!/build/app/outputs/flutter-apk/app-release.apk
 /build/
 /lib/constant/consts.dart
 # Symbolication related
