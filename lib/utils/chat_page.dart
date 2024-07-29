@@ -37,7 +37,6 @@ class _ChatPageState extends State<ChatPage> {
   late encrypt.Encrypter encrypter;
   bool _isOtherUserActive=false;
   late String chatId;
-  late StreamSubscription<bool> _chatActiveUsersSubscription;
   final GetIt _getIt = GetIt.instance;
   late DatabaseService _databaseService;
   ChatUser? currentUser, otherUser;
@@ -78,20 +77,7 @@ class _ChatPageState extends State<ChatPage> {
     chatId =generateChatID(uid1:_authService.user!.uid,uid2: widget.chatUser.userid);
 
     _databaseService.enterChat(chatId, _authService.user!.uid);
-    print(widget.chatkey);
-    print(encryptedkey);
 
-    // Listen to other user's activity
-    // Listen to the chat active users stream and update state
-    _chatActiveUsersSubscription = _databaseService
-        .chatActiveUsersStream(chatId, widget.chatUser.userid)
-        .listen((isActive) {
-      if (!_isDisposing) {
-        setState(() {
-          _isOtherUserActive = isActive;
-        });
-      }
-    });
 
     // Listen to chat updates
 
@@ -102,8 +88,6 @@ class _ChatPageState extends State<ChatPage> {
   void dispose() {
     _isDisposing = true;
 
-    // Cancel the stream subscription to prevent updates after dispose
-    _chatActiveUsersSubscription.cancel();
 
 
     // Perform other cleanup tasks
@@ -125,8 +109,6 @@ class _ChatPageState extends State<ChatPage> {
         firstName: widget.chatUser.email.split('@')[0],
         profileImage: widget.chatUser.pfpURL,
       );
-      print(currentUser);
-      print(otherUser);
       _isLoading = false;
     });
     await _databaseService.markMessagesAsRead(
@@ -287,7 +269,6 @@ class _ChatPageState extends State<ChatPage> {
               final message = messages[index];
               final isCurrentUser = message.user.id == currentUser!.id;
               final bool isRead = message.read ?? false; // Default to false if null
-              print(isRead);
               return Align(
                 alignment: isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
                 child: Container(
@@ -373,11 +354,11 @@ class _ChatPageState extends State<ChatPage> {
                 ),
                 IconButton(
                   icon: Icon(Icons.send),
-                  onPressed: () => _sendMessage(ChatMessage(
+                  onPressed: () async => _sendMessage(ChatMessage(
                     user: currentUser!,
                     createdAt: DateTime.now(),
                     text: _controller.text,
-                    read: false, // Initially set to unread when sending
+                    read: await _databaseService.isChatActiveUser(chatId, otherUser!.id), // Initially set to unread when sending
                   )),
                 ),
                 _mediaMessageButton(),
@@ -406,6 +387,7 @@ class _ChatPageState extends State<ChatPage> {
                   uid1: _authService.user!.uid, uid2: widget.chatUser.userid));
           if (downloadURL != null) {
             ChatMessage chatMessage = ChatMessage(
+              read:  await _databaseService.isChatActiveUser(chatId, otherUser!.id),
                 user: currentUser!,
                 createdAt: DateTime.now(),
                 medias: [
@@ -443,6 +425,7 @@ class _ChatPageState extends State<ChatPage> {
           sentAt: Timestamp.fromDate(chatMessage.createdAt),
           read: chatMessage.read,
         );
+        print(chatMessage.read);
         await _databaseService.sendChatMessage(
           currentUser!.id,
           otherUser!.id,
@@ -462,6 +445,7 @@ class _ChatPageState extends State<ChatPage> {
         messageType: MessageType.Text,
         sentAt: Timestamp.fromDate(chatMessage.createdAt),
       );
+      print(chatMessage.read);
       await _databaseService.sendChatMessage(
         currentUser!.id,
         otherUser!.id,

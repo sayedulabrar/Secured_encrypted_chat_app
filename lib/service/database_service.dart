@@ -286,18 +286,26 @@ class DatabaseService {
 
 
 
-  Stream<bool> chatActiveUsersStream(String chatId, String userId) {
-    return _chatActivity.doc(chatId).snapshots().map((snapshot) {
-      final chatActivity = snapshot.data() as ChatActivity; // This will be of type ChatActivity
+  Future<bool> isChatActiveUser(String chatId, String userId) async {
+    try {
+      final snapshot = await _chatActivity.doc(chatId).get();
+      final chatActivity = snapshot.data() as ChatActivity?;
 
       if (chatActivity == null) {
         return false; // Handle the case where chatActivity is null
       }
+      print("printing stattus beofore........");
+      print(chatActivity.userPresence[userId]);
 
       // Extract the user presence status from ChatActivity
       return chatActivity.userPresence[userId] ?? false;
-    });
+    } catch (e) {
+      // Handle any errors that occur during the fetch operation
+      print("Error fetching chat activity: $e");
+      return false;
+    }
   }
+
 
 
 
@@ -385,17 +393,6 @@ class DatabaseService {
     }
   }
 
-  Future<void> markMessageAsRead2(String chatId, int messageIndex) async {
-    DocumentSnapshot chatDoc = await _chatCollection.doc(chatId).get();
-    Chat chat = Chat.fromJson(chatDoc.data() as Map<String, dynamic>);
-
-    if (messageIndex < chat.messages.length) {
-      chat.messages[messageIndex].read = true;
-      await _chatCollection.doc(chatId).update({
-        'messages': chat.messages.map((m) => m.toJson()).toList(),
-      });
-    }
-  }
 }
 
 

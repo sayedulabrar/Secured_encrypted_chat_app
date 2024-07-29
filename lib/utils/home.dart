@@ -311,6 +311,7 @@ class _HomeState extends State<Home> {
                   itemCount: filteredUsers.length,
                   itemBuilder: (context, index) {
                     Profile userProfile = filteredUsers[index];
+                    DateTime? lastMessageTime = users.LastMessageTime[userProfile.userid];
                     return Column(
                       children: <Widget>[
                         ChatTile(
@@ -324,6 +325,7 @@ class _HomeState extends State<Home> {
                             }
                             _showDialog(userProfile);
                           },
+                          lastMessageTime: lastMessageTime,
                         ),
                         Divider(), // Divider after each ChatTile
                       ],

@@ -59,6 +59,7 @@ class ChatTile extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(height: 10,),
           if (lastMessageTime != null) // Optional display
             Text(
               DateFormat('yyyy-MM-dd hh:mm a').format(lastMessageTime!),
