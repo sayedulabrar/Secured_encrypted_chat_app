@@ -50,7 +50,6 @@ class _ChatPageState extends State<ChatPage> {
   bool isUploading = false; // Add state variab
   final List<ChatMessage> _messages = [];
   final TextEditingController _controller = TextEditingController();
-  bool _isDisposing = false;
   bool isTodayOrFuture=false;
   bool fakeuser=false;
 
@@ -86,11 +85,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   void dispose() {
-    _isDisposing = true;
 
-
-
-    // Perform other cleanup tasks
     _databaseService.leaveChat(chatId, _authService.user!.uid);
 
     super.dispose();
@@ -416,6 +411,8 @@ class _ChatPageState extends State<ChatPage> {
         final encrypted = encrypter.encrypt(messageUrl!, iv: iv);
         final encryptedString = encrypted.base64;
         final ivString = iv.base64; // Store the IV as base64
+        print("printing stattus beofore........");
+        print(chatMessage.read);
 
         Message message = Message(
           senderID: chatMessage.user.id,
@@ -439,6 +436,7 @@ class _ChatPageState extends State<ChatPage> {
       final ivString = iv.base64; // Store the IV as base64
 
       Message messageencrypt = Message(
+        read: chatMessage.read,
         senderID: currentUser!.id,
         content: encryptedString,
         iv: ivString, // Store IV with the message
@@ -482,6 +480,9 @@ class _ChatPageState extends State<ChatPage> {
       final iv = encrypt.IV.fromBase64(m.iv); // Retrieve IV from the message
       String decryptedContent = safeDecrypt(m.content!, iv);
 
+
+      print("printing stattus during generating chat message........");
+      print(m.read);
       if (m.messageType == MessageType.Image) {
         return ChatMessage(
           user: m.senderID == currentUser!.id ? currentUser! : otherUser!,
