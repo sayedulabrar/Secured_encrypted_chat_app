@@ -42,7 +42,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-!build/app/outputs/flutter-apk/app-release.apk
+!/build/app/outputs/flutter-apk/app-release.apk
 # .gitignore
 
 
