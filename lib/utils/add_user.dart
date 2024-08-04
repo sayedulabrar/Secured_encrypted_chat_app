@@ -12,7 +12,9 @@ import 'package:cryp_comm/models/profile.dart';
 
 import '../service/media_service.dart';
 import '../service/storage_service.dart';
+import '../widget/button_widget.dart';
 import '../widget/navigation_drawer.dart';
+import '../widget/user_list_widget.dart';
 
 enum UserRole {
   Admin,
@@ -31,7 +33,6 @@ class _AddUsersState extends State<AddUsers> {
   late MediaService _mediaService;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _roleController = TextEditingController();
   late DatabaseService _databaseService;
   UserRole _selectedRole = UserRole.User;
   late AlertService _alertService;
@@ -40,6 +41,7 @@ class _AddUsersState extends State<AddUsers> {
   late StorageService _storageService;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -50,10 +52,36 @@ class _AddUsersState extends State<AddUsers> {
     _storageService = _getIt.get<StorageService>();
   }
 
+  Future<void> _handleSignup() async {
+    setState(() {
+      _isLoading = true; // Show loading indicator
+    });
 
+    String email = _emailController.text + '@gmail.com';
+    String password = _passwordController.text;
 
-  Widget buildProfileImage() {
-    double radius = MediaQuery.of(context).size.width * 0.20;
+    if (PASSWORD_VALIDATION_REGEX.hasMatch(password) &&
+        EMAIL_VALIDATION_REGEX.hasMatch(email)) {
+      await _databaseService.signupWithRole(email, password, _selectedRole.name, selectedimage!);
+      _alertService.showToast(text: "Account created successfully");
+
+      // Clear text fields
+      _emailController.clear();
+      _passwordController.clear();
+      setState(() {
+        selectedimage = null;
+      });
+    } else {
+      _alertService.showToast(text: "Follow correct pattern for password and email");
+    }
+
+    setState(() {
+      _isLoading = false; // Hide loading indicator
+    });
+  }
+
+  Widget buildProfileImage(StateSetter setState) {
+    double radius = MediaQuery.of(context).size.width * 0.15;
 
     return Center(
       child: Stack(
@@ -100,6 +128,13 @@ class _AddUsersState extends State<AddUsers> {
               ),
             ),
           ),
+          if (_isLoading)
+            Container(
+              color: Colors.black54,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
         ],
       ),
     );
@@ -108,212 +143,187 @@ class _AddUsersState extends State<AddUsers> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Users'),
-      ),
-        drawer: NavigationDrawerWidget(initialSelectedIndex: 1),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+
+    return _isLoading?Container(
+      color: Colors.white,
+      child: Center(
         child: Column(
+          mainAxisSize: MainAxisSize.min, // Use min to only take up as much space as needed
+          mainAxisAlignment: MainAxisAlignment.center, // Center the content
           children: [
-            buildProfileImage(),
-            SizedBox(
-              height: 60,
-              width: 600,
-              child: TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'User Id',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.circular(0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                    borderRadius: BorderRadius.circular(0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green),
-                    borderRadius: BorderRadius.circular(0),
-                  ),
-                  contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  filled: true,
-                  // Optional: Adds a background color
-                ),
-              ),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                hintText: "required Capital,small letters and >=3 numbers",
-                labelText: 'Password',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.green),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                contentPadding:
-                EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                filled: true,
-                // Optional: Adds a background color
-              ),
-              obscureText: true,
-            ),
-            SizedBox(height: 16),
-            DropdownButtonFormField<UserRole>(
-              value: _selectedRole,
-              onChanged: (UserRole? value) {
-                if (value != null) {
-                  setState(() {
-                    _selectedRole = value;
-                  });
-                }
-              },
-              decoration: InputDecoration(
-                labelText: 'Role',
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.transparent),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.green),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                contentPadding:
-                EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                filled: true,
-                // Optional: Adds a background color
-              ),
-              items: UserRole.values.map((role) {
-                return DropdownMenuItem<UserRole>(
-                  value: role,
-                  child: Text(role == UserRole.Admin ? 'Admin' : 'User'),
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all<Color>(Colors.blue),
-              ),
-              onPressed: () {
-                String email = _emailController.text+'@gmail.com';
-                String password = _passwordController.text;
-                if (PASSWORD_VALIDATION_REGEX.hasMatch(password)&& EMAIL_VALIDATION_REGEX.hasMatch(email)) {
-                  _databaseService.signupWithRole(email, password, _selectedRole.name,selectedimage!);
-                  _alertService.showToast(text: "Account created successfully");
-                  // Clear text fields
-                  _emailController.clear();
-                  _passwordController.clear();
-                  setState(() {
-                    selectedimage=null;
-                  });
-                } else {
-                  _alertService.showToast(
-                      text: "Follow correct pattern for password and email");
-                }
-              },
-              child: Text('Create User'),
-            ),
-            SizedBox(height: 32),
-            Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: _firestore.collection('users').snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  }
-                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return Center(child: Text('No users found.'));
-                  }
-
-                  List<Profile> users = snapshot.data!.docs.map((doc) {
-                    return Profile(
-                      userid : doc['userid'],
-                      email: doc['email'],
-                      password: doc['password'],
-                      role: doc['role'],
-                      disabled: doc['disabled'] ?? false,
-                    );
-                  }).toList();
-
-                  return ListView.builder(
-                    itemCount: users.length,
-                    itemBuilder: (context, index) {
-                      Profile user = users[index];
-                      return Card(
-                        elevation: 4,
-                        margin:
-                        EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                        child: ListTile(
-                          contentPadding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          trailing: user.role == "User"
-                              ? IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Confirm User role'),
-                                    content: Text(
-                                        "Are you sure you want to change this user's role?"),
-                                    actions: [
-                                      TextButton(
-                                        child: Text('Cancel'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                      TextButton(
-                                        child: Text('Confirm'),
-                                        onPressed: () {
-                                          _databaseService.toggleUserStatus(user.email);
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                          )
-                              : null,
-                          title: Text(user.email.split('@')[0]),
-                          subtitle: Text(user.role),
-                          leading: CircleAvatar(
-                            backgroundColor:
-                            user.disabled ? Colors.red : Colors.green,
-                            child: Icon(
-                              user.disabled ? Icons.block : Icons.check,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
+            CircularProgressIndicator(),
+            SizedBox(height: 16), // Add space between the progress indicator and the text
+            Text(
+              'Please wait until the user is created',
+              style: TextStyle(
+                fontSize: 16, // Adjust the font size as needed
+                color: Colors.black, // Adjust the color as needed
               ),
             ),
           ],
         ),
+      ),
+    )
+        :Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text('Add Users'),
+      ),
+      drawer: NavigationDrawerWidget(initialSelectedIndex: 1),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showAddUserDialog(context);
+        },
+        child: Icon(Icons.add),
+      ),
+      body: UserListWidget(firestore: _firestore, databaseService: _databaseService),
+    );
+  }
+
+  void _showAddUserDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        
+        return Dialog(
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  constraints: BoxConstraints(maxWidth: 340),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Add User',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      buildProfileImage(setState), // Pass setState to the dialog
+                      SizedBox(height: 16),
+                      _buildInputField(
+                        controller: _emailController,
+                        label: 'User Id',
+                        icon: Icons.person,
+                      ),
+                      SizedBox(height: 12),
+                      _buildInputField(
+                        controller: _passwordController,
+                        label: 'Password',
+                        icon: Icons.lock,
+                        isPassword: true,
+                      ),
+                      SizedBox(height: 12),
+                      _buildRoleDropdown(),
+                      SizedBox(height: 24),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildDialogButton(
+                            label: 'Cancel',
+                            onPressed: () => Navigator.of(context).pop(),
+                            color: Colors.redAccent,
+                          ),
+
+                          _buildDialogButton(
+                            label: 'Create User',
+                            onPressed: () {
+                              _handleSignup();
+                              Navigator.of(context).pop();
+                            },
+                            color: Colors.blue,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+
+  Widget _buildInputField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    bool isPassword = false,
+  }) {
+    return Container(
+      height: 50,
+      child: TextField(
+        controller: controller,
+        obscureText: isPassword,
+        decoration: InputDecoration(
+          labelText: label,
+          prefixIcon: Icon(icon),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRoleDropdown() {
+    return Container(
+      height: 50,
+      child: DropdownButtonFormField<UserRole>(
+        value: _selectedRole,
+        onChanged: (UserRole? value) {
+          if (value != null) {
+            setState(() {
+              _selectedRole = value;
+            });
+          }
+        },
+        decoration: InputDecoration(
+          labelText: 'Role',
+          prefixIcon: Icon(Icons.work),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        ),
+        items: UserRole.values.map((role) {
+          return DropdownMenuItem<UserRole>(
+            value: role,
+            child: Text(role == UserRole.Admin ? 'Admin' : 'User'),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildDialogButton({
+    required String label,
+    required VoidCallback onPressed,
+    required Color color,
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(label,style: TextStyle(
+        color: Colors.white
+      ),),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
+import '../widget/button_widget.dart';
 import '/service/alert_service.dart';
 import '/service/navigation_service.dart';
 import '../constant/consts.dart';
@@ -24,6 +25,7 @@ class _LoginState extends State<Login> {
   late AuthService _authService;
   late NavigationService _navigationService;
   late AlertService _alertService;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -117,7 +119,7 @@ class _LoginState extends State<Login> {
                 height: MediaQuery.of(context).size.height * 0.1,
                 hintText: "Password",
                 validationRegEx: PASSWORD_VALIDATION_REGEX,
-                obscuretext: true,
+                obscureText: true,
                 onsaved: (value) {
                   setState(() {
                     password = value;
@@ -125,6 +127,7 @@ class _LoginState extends State<Login> {
                 },
               ),
               _loginButton(),
+
             ],
           ),
         ),
@@ -135,77 +138,42 @@ class _LoginState extends State<Login> {
   Widget _loginButton() {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xff2ecc71), Color(0xff27ae60)],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-          borderRadius:
-              BorderRadius.circular(8.0), // Add border radius if needed
-        ),
-        child: MaterialButton(
-          onPressed: () async {
-            try {
-              if (_loginFormKey.currentState?.validate() ?? false) {
-                _loginFormKey.currentState?.save();
-                String email=userid! +'@gmail.com';
-                bool result = await _authService.login(email, password!);
+      child: RoundButton(
+        title: 'Login',
+        onTap: () async {
+          setState(() {
+            _isLoading = true; // Set loading to true
+          });
 
-                if (result) {
-                  _navigationService.pushReplacementNamed('/home');
-                } else {
-                  // _navigationService.pushReplacementNamed('/email_verification');
-                  _alertService.showToast(
-                    text: "Failed to login. Please check your useid and verify it before trying again.",
-                    icon: Icons.perm_identity,
-                  );
+          try {
+            if (_loginFormKey.currentState?.validate() ?? false) {
+              _loginFormKey.currentState?.save();
+              String email = userid! + '@gmail.com';
+              bool result = await _authService.login(email, password!);
 
-                }
+              if (result) {
+                _navigationService.pushReplacementNamed('/home');
+              } else {
+                _alertService.showToast(
+                  text: "Failed to login. Please check your userid and verify it before trying again.",
+                  icon: Icons.perm_identity,
+                );
               }
-            } catch (e) {
-              print("Error during login: $e");
-              _alertService.showToast(
-                text: "An error occurred during login. Please try again later.",
-                icon: Icons.error,
-              );
             }
-          },
-          color: Colors.transparent,
-          elevation: 0, // Remove elevation to see the gradient
-          child: const Text(
-            "Login",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w900
-            ),
-          ),
-        ),
+          } catch (e) {
+            print("Error during login: $e");
+            _alertService.showToast(
+              text: "An error occurred during login. Please try again later.",
+              icon: Icons.error,
+            );
+          } finally {
+            setState(() {
+              _isLoading = false; // Set loading to false
+            });
+          }
+        },
+        loading: _isLoading, // Pass the loading state
       ),
     );
   }
-
-  // Widget _createAnAccountLink() {
-  //   return Expanded(
-  //     child: Row(
-  //       mainAxisSize: MainAxisSize.max,
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       crossAxisAlignment: CrossAxisAlignment.end,
-  //       children: [
-  //         const Text("Don't have an account?"),
-  //         GestureDetector(
-  //           onTap: () {
-  //             _navigationService.pushNamed(
-  //                 '/register'); //normally push this on login so he can come back here
-  //           },
-  //           child: const Text(
-  //             "Sign Up",
-  //             style: TextStyle(fontWeight: FontWeight.w800),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

@@ -18,15 +18,14 @@ class RoundButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         alignment: Alignment.center,
-        margin: EdgeInsets.only(left: 20, right: 20, top: 20),
         padding: EdgeInsets.only(left: 20, right: 20),
-        height: 65,
+        height: 50,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-              colors: [Color(0xff2196F3), Color(0xff21CBF3)],
+              colors: [Color(0xff2ecc71), Color(0xff27ae60)],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight),
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(10),
           color: Colors.grey[200],
           boxShadow: [
             BoxShadow(

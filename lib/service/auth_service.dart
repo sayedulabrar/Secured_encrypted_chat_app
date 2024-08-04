@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../models/profile.dart';
 
@@ -9,7 +10,7 @@ class AuthService {
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   User? get user {
     return _user;
@@ -21,10 +22,31 @@ class AuthService {
     _user=reuse;
   }
 
-  // AuthService() {
-  //   _firebaseAuth.authStateChanges().listen(authStateChangesStreamListener);
-  // }
+  AuthService() {
+    _initializeUser();
+  }
 
+  Future<void> _initializeUser() async {
+    print("Autheservice has been initi");
+    String? userEmail = await _secureStorage.read(key: 'userEmail');
+    String? userPassword = await _secureStorage.read(key: 'userPassword');
+
+    if (userEmail != null && userPassword != null) {
+      try {
+        final credential = await _firebaseAuth.signInWithEmailAndPassword(
+          email: userEmail,
+          password: userPassword,
+        );
+
+        if (credential.user != null) {
+          _user = credential.user;
+          await fetchPersonalProfile();
+        }
+      } catch (e) {
+        print("Error initializing user: $e");
+      }
+    }
+  }
 
   Future<void> fetchPersonalProfile() async {
     try {
@@ -59,8 +81,6 @@ class AuthService {
 
       if (credential.user != null) {
         _user = credential.user;
-
-        // Check user disabled status after successful login
         await checkUserDisabledStatus(email);
 
         // // Check if the email is verified
@@ -70,6 +90,13 @@ class AuthService {
         // }
 
         await fetchPersonalProfile();
+        // Store user credentials in secure storage
+        await _secureStorage.write(key: 'userEmail', value: email);
+        await _secureStorage.write(key: 'userPassword', value: password);
+        if (_userprofile?.role == "Admin") {
+          await _secureStorage.write(key: 'adminPassword', value: password);
+        }
+
         return true; // Login successful
       }
       return false; // Login failed
@@ -113,8 +140,13 @@ class AuthService {
         'is_online': false,
         'last_active': DateTime.now().millisecondsSinceEpoch.toString(),
       });
-      _userprofile=null;
       await _firebaseAuth.signOut();
+      _user = null;
+      _userprofile = null;
+
+      // Clear user credentials from secure storage
+      await _secureStorage.delete(key: 'userEmail');
+      await _secureStorage.delete(key: 'userPassword');
 
       return true;
     } catch (e) {
@@ -123,11 +155,5 @@ class AuthService {
     }
   }
 
-  // void authStateChangesStreamListener(User? user) {
-  //   if (user != null) {
-  //     _user = user;
-  //   } else {
-  //     _user = null;
-  //   }
-  // }
+
 }
