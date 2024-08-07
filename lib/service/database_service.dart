@@ -242,6 +242,35 @@ class DatabaseService {
     }
   }
 
+
+
+  Future<Profile?> fetchProfile(String otherId) async {
+    try {
+      QuerySnapshot querySnapshot = await _userCollection
+          .where('userid', isEqualTo: otherId)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot docSnapshot = querySnapshot.docs.first;
+        // Ensure data is of type Map<String, dynamic>
+        final data = docSnapshot.data() as Profile;
+        print('Profile Data: $data');
+        // Convert Map<String, dynamic> data to Profile
+        return data;
+      } else {
+        print('No profile found for userId: $otherId');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching profile: $e');
+      return null;
+    }
+  }
+
+
+
+
+
   Future<bool> checkChatExists(String uid1, String uid2) async {
     String chatID = generateChatID(uid1: uid1, uid2: uid2);
     final result = await _chatCollection.doc(chatID).get();
@@ -350,10 +379,51 @@ class DatabaseService {
   }
 
 
+
   Stream<DocumentSnapshot<Chat>> getChatData(String uid1, String uid2) {
     String chatID = generateChatID(uid1: uid1, uid2: uid2);
     return _chatCollection.doc(chatID).snapshots() as Stream<DocumentSnapshot<Chat>>;
   }
+
+  Stream<List<Message>> getUnreadMessagesStreamForCurrentUser() {
+    String currentUserId = _authService.user!.uid;
+
+    // Create a stream for listening to chat documents where the user is a participant
+    return _chatCollection
+        .where('participants', arrayContains: currentUserId)
+        .snapshots()
+        .switchMap((chatSnapshot) {
+      // List to store unread messages
+      List<Message> unreadMessages = [];
+
+      // Process each chat document
+      final chatStreams = chatSnapshot.docs.map((chatDoc) {
+        // print(chatDoc.id);
+
+        // Stream for the current chat document's messages array
+        return Stream.value(chatDoc['messages'] as List<dynamic>).map((messages) {
+          // Filter and collect unread messages
+          final unreadMessagesInChat = (messages as List<dynamic>).map((messageData) {
+            final message = Message.fromJson(messageData as Map<String, dynamic>);
+            return (message.senderID != currentUserId && !message.read) ? message : null;
+          }).whereType<Message>().toList(); // Filter out null values
+
+          unreadMessages.addAll(unreadMessagesInChat);
+
+          // Sort the unread messages by their sentAt timestamp
+          unreadMessages.sort((a, b) {
+            return b.sentAt!.toDate().compareTo(a.sentAt!.toDate());
+          });
+
+          return unreadMessages;
+        });
+      });
+
+      // Combine all chat message streams
+      return Rx.combineLatestList(chatStreams).map((_) => unreadMessages);
+    });
+  }
+
 
   Future<void> deleteChatMessage(String currentUserId, String otherUserId, DateTime sentAt) async {
     final chatId = generateChatID(uid1: currentUserId, uid2: otherUserId);

@@ -1,5 +1,7 @@
 import 'package:cryp_comm/utils/add_user.dart';
+import 'package:cryp_comm/utils/unread_messages.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import '../utils/email_verification.dart';
 import '/utils/home.dart';
 import '/utils/login.dart';
@@ -11,7 +13,8 @@ class NavigationService {
     '/login': (context) => Login(),
     '/home': (context) => Home(),
     '/adduser': (context) => AddUsers(),
-    '/verify-email':(context) => VerifyEmailPage()
+    '/verify-email':(context) => VerifyEmailPage(),
+    '/unread':(context) => UnreadMessages()
   };
 
   GlobalKey<NavigatorState>? get navigatorKey => _navigatorKey;

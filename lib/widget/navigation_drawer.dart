@@ -68,19 +68,27 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                     index: 0,
                     onClicked: () => selectedItem(context, 0),
                   ),
+
                   const SizedBox(height: 16),
                   _authService.userprofile?.role=="Admin"?buildMenuItem(
                     text: 'Add User',
                     icon: Icons.person_add,
                     index: 1,
                     onClicked: () => selectedItem(context, 1),
-                  ):Container(),
+                  ):SizedBox(height: 1,),
+                  const SizedBox(height: 24),
+                  buildMenuItem(
+                    text: 'Unread Message',
+                    icon: Icons.mark_chat_unread_outlined,
+                    index: 2,
+                    onClicked: () => selectedItem(context, 2),
+                  ),
                   const SizedBox(height: 16),
                   buildMenuItem(
                     text: 'Logout',
                     icon: Icons.logout,
-                    index: 2,
-                    onClicked: () => selectedItem(context, 2),
+                    index: 3,
+                    onClicked: () => selectedItem(context, 3),
                   ),
                 ],
               ),
@@ -147,7 +155,11 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
     final backgroundColor = isSelected ? Colors.green[700] : null;
 
     return ListTile(
-      leading: Icon(icon, color: color),
+      leading: AnimatedRotation(
+        turns: isSelected ? 1 : 0,
+        duration: Duration(milliseconds: 300),
+        child: Icon(icon, color: color),
+      ),
       title: Text(text, style: TextStyle(color: color)),
       tileColor: backgroundColor,
       onTap: () {
@@ -172,10 +184,14 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
       _navigationService.pushReplacementNamed('/adduser');
         break;
       case 2:
+        _navigationService.pushNamed('/unread');
+        break;
+      case 3:
       // Logout
         _authService.logout();
         _navigationService.pushReplacementNamed('/login');
         break;
+
     }
   }
 }
