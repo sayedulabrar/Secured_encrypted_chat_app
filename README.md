@@ -4,7 +4,7 @@
 
 To download the final version of **SecureChat**, check the **finalapp** folder.
 
-## To check the app use these 3 accounts.
+## To check the app use these 3 accounts and don't use extra space.
 **uid**:sayedulabrar14045, unknown,unknown2
 **password**: Abrar123
 
