@@ -4,9 +4,9 @@
 
 To download the final version of **SecureChat**, check the **finalapp** folder.
 
-To check the app use these 3 accounts.
-uid:sayedulabrar14045, unknown,unknown2
-password: Abrar123
+To check the app use these 3 accounts:
+**uid**:sayedulabrar14045, unknown,unknown2
+**password**: Abrar123
 
 Welcome to **SecureChat** - the most robust, feature-rich, and secure chat application designed to keep your conversations private and your data safe. Dive into a world where your messages are shielded from prying eyes, and enjoy a seamless communication experience with cutting-edge features!
 
