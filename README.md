@@ -1,5 +1,9 @@
 # 🛡️ SecureChat - Your Ultimate Privacy Companion 🛡️
 
+## 📥 Download the Final App
+
+To download the final version of **SecureChat**, check the **finalapp** folder.
+
 Welcome to **SecureChat** - the most robust, feature-rich, and secure chat application designed to keep your conversations private and your data safe. Dive into a world where your messages are shielded from prying eyes, and enjoy a seamless communication experience with cutting-edge features!
 
 ## 🔒 Key Features
@@ -30,9 +34,6 @@ Each day a new chat is generated, and users can use a shared key to chat for tha
 - **Account Protection:** Users can log in with their image, password, and role. Logout functionality ensures that sessions are secure.
 - **Secure Data Handling:** All credentials and sensitive data are handled with the highest security standards.
 
-## 📥 Download the Final App
-
-To download the final version of **SecureChat**, check the **finalapp** folder.
 
 Please ensure you download the latest version to benefit from all updates and security enhancements.
 
