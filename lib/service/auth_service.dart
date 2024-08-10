@@ -156,6 +156,8 @@ class AuthService {
       // Optionally, you can also update the password in secure storage
       await _secureStorage.write(key: 'userPassword', value: newPassword);
 
+      await _firestore.collection("users").doc(user?.uid).update({'password':newPassword});
+
       return true; // Password change successful
     } catch (e) {
       print("Error changing password: $e");
