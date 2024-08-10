@@ -9,6 +9,7 @@ import '../models/profile.dart';
 import '../service/alert_service.dart';
 import '../service/database_service.dart';
 import '../service/media_service.dart';
+import '../service/navigation_service.dart';
 
 
 class Profile_Page extends StatefulWidget {
@@ -28,7 +29,7 @@ class _Profile_PageState extends State<Profile_Page> {
   bool showPassword = false;
   bool _isPasswordObscured = true; // Initially obscure the password
   bool _isEyeIconVisible = false; // Controls visibility of the eye icon
-
+  late NavigationService _navigationService;
   bool _isImageSelected = false;
   Profile? myself;
 
@@ -38,6 +39,7 @@ class _Profile_PageState extends State<Profile_Page> {
     _databaseService = _getIt.get<DatabaseService>();
     _mediaService = _getIt.get<MediaService>();
     _alertService = _getIt.get<AlertService>();
+    _navigationService = _getIt.get<NavigationService>();
     _initializeChat();
   }
 
@@ -173,7 +175,10 @@ class _Profile_PageState extends State<Profile_Page> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ElevatedButton(
                     onPressed: _handleProfilePicUpdate,
-                    child: Text("Update Profile Picture"),
+                    child: Text("Update Profile Picture",style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold
+                    ),),
                   ),
                 ),
               if (myself != null)
@@ -181,6 +186,18 @@ class _Profile_PageState extends State<Profile_Page> {
                   buildTextField("User Id", myself!.email.split('@')[0], false),
                   buildTextField("Password", myself!.password, true),
                   buildTextField("Role", myself!.role, false),
+                  const SizedBox(height: 20), // Adds space before the button
+                  TextButton.icon(
+                    onPressed: () {
+                     _navigationService.pushNamed('/changepassword');
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white, backgroundColor: Colors.blue, // Text color
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Padding
+                    ),
+                    icon: const Icon(Icons.arrow_forward, color: Colors.white), // Icon
+                    label: const Text('Change Password'),
+                  ),
                 ],
               if (_isLoading)
                 Center(child: CircularProgressIndicator()),
