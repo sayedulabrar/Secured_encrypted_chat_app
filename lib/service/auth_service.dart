@@ -4,22 +4,26 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../models/profile.dart';
 
+
+
 class AuthService {
   User? _user;
   Profile? _userprofile;
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   User? get user {
     return _user;
   }
-  Profile ? get userprofile{
+
+  Profile? get userprofile {
     return _userprofile;
   }
-  void set user(User? reuse){
-    _user=reuse;
+
+  set user(User? reuse) {
+    _user = reuse;
   }
 
   AuthService() {
@@ -27,7 +31,7 @@ class AuthService {
   }
 
   Future<void> _initializeUser() async {
-    print("Autheservice has been initi");
+    print("AuthService has been initialized");
     String? userEmail = await _secureStorage.read(key: 'userEmail');
     String? userPassword = await _secureStorage.read(key: 'userPassword');
 
@@ -55,20 +59,14 @@ class AuthService {
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        // Get the first document
         DocumentSnapshot document = querySnapshot.docs.first;
-
-        // Convert the document data to a Map
         Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-
-        // Create a Profile object from the data
         _userprofile = Profile.fromJson(data);
       } else {
         print("No profile found for the current user.");
       }
     } catch (e) {
       print("Error fetching personal profile: $e");
-      // Handle the error appropriately
     }
   }
 
@@ -83,37 +81,21 @@ class AuthService {
         _user = credential.user;
         await checkUserDisabledStatus(email);
 
-        // // Check if the email is verified
-        // if (!_user!.emailVerified) {
-        //   await sendVerificationEmail(_user!);
-        //   return false; // Indicate that email verification is required
-        // }
-
         await fetchPersonalProfile();
-        // Store user credentials in secure storage
         await _secureStorage.write(key: 'userEmail', value: email);
         await _secureStorage.write(key: 'userPassword', value: password);
         if (_userprofile?.role == "Admin") {
           await _secureStorage.write(key: 'adminPassword', value: password);
         }
 
-        return true; // Login successful
+        return true;
       }
-      return false; // Login failed
+      return false;
     } catch (e) {
       print(e);
       throw Exception("Login failed: $e");
     }
   }
-
-  // Future<void> sendVerificationEmail(User user) async {
-  //   if (!user.emailVerified) {
-  //     await user.sendEmailVerification();
-  //   }
-  // }
-
-
-
 
   Future<void> checkUserDisabledStatus(String email) async {
     QuerySnapshot userQuery = await FirebaseFirestore.instance
@@ -128,11 +110,9 @@ class AuthService {
     DocumentSnapshot userDoc = userQuery.docs.first;
 
     if (userDoc.exists && userDoc['disabled'] == true) {
-      throw Exception(
-          "Your account has been disabled. Please contact support.");
+      throw Exception("Your account has been disabled. Please contact support.");
     }
   }
-
 
   Future<bool> logout() async {
     try {
@@ -144,7 +124,6 @@ class AuthService {
       _user = null;
       _userprofile = null;
 
-      // Clear user credentials from secure storage
       await _secureStorage.delete(key: 'userEmail');
       await _secureStorage.delete(key: 'userPassword');
 
@@ -155,5 +134,32 @@ class AuthService {
     }
   }
 
+  Future<bool> changePassword(String oldPassword, String newPassword) async {
+    try {
+      // Reauthenticate user
+      User? currentUser = _firebaseAuth.currentUser;
+      if (currentUser == null) {
+        throw Exception("No user is currently signed in.");
+      }
 
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: currentUser.email!,
+        password: oldPassword,
+      );
+
+      // Reauthenticate
+      await currentUser.reauthenticateWithCredential(credential);
+
+      // Update password
+      await currentUser.updatePassword(newPassword);
+
+      // Optionally, you can also update the password in secure storage
+      await _secureStorage.write(key: 'userPassword', value: newPassword);
+
+      return true; // Password change successful
+    } catch (e) {
+      print("Error changing password: $e");
+      return false; // Password change failed
+    }
+  }
 }
