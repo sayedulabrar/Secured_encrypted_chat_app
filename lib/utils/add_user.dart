@@ -38,8 +38,6 @@ class _AddUsersState extends State<AddUsers> {
   late AlertService _alertService;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   File? selectedimage;
-  late StorageService _storageService;
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   bool _isLoading = false;
 
@@ -49,7 +47,6 @@ class _AddUsersState extends State<AddUsers> {
     _databaseService = _getIt.get<DatabaseService>();
     _alertService = _getIt.get<AlertService>();
     _mediaService = _getIt.get<MediaService>();
-    _storageService = _getIt.get<StorageService>();
   }
 
   Future<void> _handleSignup() async {

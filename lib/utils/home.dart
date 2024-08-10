@@ -44,6 +44,7 @@ class _HomeState extends State<Home> {
     _pushNotificationService = _getIt.get<PushNotificationService>();
     setupFCM();
     _searchController.addListener(_updateSearchQuery);
+    _dateController.text = "${_selectedDate.toLocal()}".split(' ')[0];
   }
 
   void _updateSearchQuery() {
@@ -55,6 +56,7 @@ class _HomeState extends State<Home> {
   @override
   void dispose() {
     _searchController.dispose();
+    _dateController.dispose();
     super.dispose();
   }
 
@@ -255,6 +257,11 @@ class _HomeState extends State<Home> {
                               await _databaseService.createNewChat(
                                   _authService.user!.uid, userProfile.userid);
                             }
+
+                            setState(() {
+                              _selectedDate = DateTime.now();
+                              _dateController.text = "${_selectedDate.toLocal()}".split(' ')[0];
+                            });
                             _showDialog(userProfile);
                           },
                         ),
@@ -323,6 +330,13 @@ class _HomeState extends State<Home> {
                               await _databaseService.createNewChat(
                                   _authService.user!.uid, userProfile.userid);
                             }
+
+                            setState(() {
+                              _selectedDate = lastMessageTime ?? DateTime.now();
+                              _dateController.text = "${_selectedDate.toLocal()}".split(' ')[0];
+                            });
+
+
                             _showDialog(userProfile);
                           },
                           lastMessageTime: lastMessageTime,
@@ -377,6 +391,10 @@ class _HomeState extends State<Home> {
                         await _databaseService.createNewChat(
                             _authService.user!.uid, userProfile.userid);
                       }
+                      setState(() {
+                        _selectedDate = DateTime.now();
+                        _dateController.text = "${_selectedDate.toLocal()}".split(' ')[0];
+                      });
                       _showDialog(userProfile);
                     },
                     child: CircleAvatar(

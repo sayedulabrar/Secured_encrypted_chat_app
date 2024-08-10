@@ -94,6 +94,17 @@ class DatabaseService {
     }
   }
 
+
+  Future<void>updateProfileImage(File img)async {
+    String uid = _firebaseAuth.currentUser!.uid;
+    String? profileURL = await _storageService.uploadUserPfp(
+      file: img, // Replace with your image file variable
+      uid: uid,
+    );
+    await _userCollection.doc(uid).update({'pfpURL':profileURL});
+    _authService.fetchPersonalProfile();
+  }
+
   Future<void> signupWithRole(String email, String password, String role,File img) async {
     User? adminUser = _firebaseAuth.currentUser;
     String? adminEmail = adminUser?.email;

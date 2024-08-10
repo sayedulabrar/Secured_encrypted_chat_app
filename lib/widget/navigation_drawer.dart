@@ -105,6 +105,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   }) =>
       InkWell(
         splashColor: Colors.black26,
+        onTap: ()=>_navigationService.pushNamed('/profile'),
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 40, horizontal: 10), // Changed -10 to 10
           child: Row(
