@@ -38,6 +38,9 @@ Each day a new chat is generated, and users can use a shared key to chat for tha
 - **Account Protection:** Users can log in with their image, password, and role. Logout functionality ensures that sessions are secure.
 - **Secure Data Handling:** All credentials and sensitive data are handled with the highest security standards.
 
+### **8. Profile Update**
+- User or Admin can update profile image only.Other info are not allowed to update.
+
 
 Please ensure you download the latest version to benefit from all updates and security enhancements.
 
