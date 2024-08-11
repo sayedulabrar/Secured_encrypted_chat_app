@@ -55,10 +55,9 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 ---
 <br><br>
 
-| Read Message Sign After Shakil Checked Message            |  
-|-------------------------------|
-| ![read_message_sign](assets/app_images/read_message_sign.jpeg) |                               |
-
+| Read Message Sign After Shakil Checked Message            |  | Disabled User Trying to Login |
+|-----------------------------|---|------------------------------|
+| ![read_message_sign](assets/app_images/read_message_sign.jpeg)| | ![disabled_user_trying_to_login](assets/app_images/disabled_user_trying_to_login.jpeg) |               
 
 ## 🔒 Key Features
 
