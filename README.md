@@ -44,27 +44,28 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 ---
 <br><br>
 
-| Chat Messages                |   | Delete Messages              |   | Chat After Deleting Message |
-|------------------------------|---|------------------------------|---|-----------------------------|
-| ![chat_messages](assets/app_images/chat_messages.jpeg) |   | ![delete_messages](assets/app_images/delete_messages.jpeg) |   | ![chat_after_deleting_message](assets/app_images/chat_after_deleting_message.jpeg) |
+| Chat of Previous Day         |   | Chat Messages                |   | Delete Messages              |
+|------------------------------|---|------------------------------|---|------------------------------|
+| ![chat_of_previous_day](assets/app_images/chat_of_previous_day.jpeg) |   | ![chat_messages](assets/app_images/chat_messages.jpeg) |   | ![delete_messages](assets/app_images/delete_messages.jpeg) |
 ---
 <br><br>
 
-| Wrong Key User(images are random) |   | Message to Shakil            |   | Recent Chat After Messaging Shakil |
-|------------------------------|---|------------------------------|---|------------------------------------|
-| ![wrong_key_user](assets/app_images/wrong_key_user.jpeg) |   | ![message_to_shakil](assets/app_images/message_to_shakil.jpeg) |   | ![recent_chat_after_shakil_checked](assets/app_images/recent_chat_after_shakil_checked.jpeg) |
----
-<br><br>
-
-| Shakil Checking Message     |   | Shakil Checking Unread Messages |   | Read Message Sign After Shakil Checked Message |
-|-----------------------------|---|-------------------------------|---|-----------------------------------------------|
-| ![shakil_checking_message](assets/app_images/shakil_checking_message.jpeg) |   | ![shakil_checking_unread_messages](assets/app_images/shakil_checking_unread_messages.jpeg) |   | ![read_message_sign](assets/app_images/read_message_sign.jpeg) |
----
-<br><br>
-
-| Push Notification           |   |                              |   |                              |
+| Chat After Deleting Message |   | Wrong Key User               |   | Message to Shakil            |
 |-----------------------------|---|------------------------------|---|------------------------------|
-| ![push_notification](assets/app_images/push_notification.PNG) |   |                              |   |                              |
+| ![chat_after_deleting_message](assets/app_images/chat_after_deleting_message.jpeg) |   | ![wrong_key_user](assets/app_images/wrong_key_user.jpeg) |   | ![message_to_shakil](assets/app_images/message_to_shakil.jpeg) |
+---
+<br><br>
+
+| Recent Chat After Messaging Shakil |   | Shakil Checking Message     |   | Shakil Checking Unread Messages |
+|---------------------------------|---|----------------------------|---|-------------------------------|
+| ![recent_chat_after_shakil_checked](assets/app_images/recent_chat_after_shakil_checked.jpeg) |   | ![shakil_checking_message](assets/app_images/shakil_checking_message.jpeg) |   | ![shakil_checking_unread_messages](assets/app_images/shakil_checking_unread_messages.jpeg) |
+---
+<br><br>
+
+| Read Message Sign After Shakil Checked Message |   | Push Notification           |   |                              |
+|-------------------------------------------------|---|-----------------------------|---|------------------------------|
+| ![read_message_sign](assets/app_images/read_message_sign.jpeg) |   | ![push_notification](assets/app_images/push_notification.PNG) |   |                              |
+
 
 
 
