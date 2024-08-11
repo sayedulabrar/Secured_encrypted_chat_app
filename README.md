@@ -50,7 +50,7 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 ---
 <br><br>
 
-| Wrong Key User               |   | Message to Shakil            |   | Recent Chat After Messaging Shakil |
+| Wrong Key User(images are random) |   | Message to Shakil            |   | Recent Chat After Messaging Shakil |
 |------------------------------|---|------------------------------|---|------------------------------------|
 | ![wrong_key_user](assets/app_images/wrong_key_user.jpeg) |   | ![message_to_shakil](assets/app_images/message_to_shakil.jpeg) |   | ![recent_chat_after_shakil_checked](assets/app_images/recent_chat_after_shakil_checked.jpeg) |
 ---
