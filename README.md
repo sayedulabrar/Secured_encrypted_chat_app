@@ -94,7 +94,7 @@ Each day a new chat is generated, and users can use a shared key to chat for tha
 - **Push Notifications:** Receive notifications for new messages and updates.
 
 ### **7. Enhanced Security**
-- **Account Protection:** Users can log in with their image, password, and role. Logout functionality ensures that sessions are secure.
+- **Account Protection:** Users can log in with their useid, password. Logout functionality ensures that sessions are secure.
 - **Secure Data Handling:** All credentials and sensitive data are handled with the highest security standards.
 
 ### **8. Profile Update**
