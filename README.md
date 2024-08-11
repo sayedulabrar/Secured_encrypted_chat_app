@@ -59,6 +59,13 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 | Shakil Checking Message     |   | Shakil Checking Unread Messages |   | Read Message Sign After Shakil Checked Message |
 |-----------------------------|---|-------------------------------|---|-----------------------------------------------|
 | ![shakil_checking_message](assets/app_images/shakil_checking_message.jpeg) |   | ![shakil_checking_unread_messages](assets/app_images/shakil_checking_unread_messages.jpeg) |   | ![read_message_sign](assets/app_images/read_message_sign.jpeg) |
+---
+<br><br>
+
+| Push Notification           |   |                              |   |                              |
+|-----------------------------|---|------------------------------|---|------------------------------|
+| ![push_notification](assets/app_images/push_notification.PNG) |   |                              |   |                              |
+
 
 
 ## 🔒 Key Features
