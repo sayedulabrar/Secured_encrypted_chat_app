@@ -62,9 +62,9 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 ---
 <br><br>
 
-| Read Message Sign After Shakil Checked Message |   | Push Notification           |   |                              |
-|-------------------------------------------------|---|-----------------------------|---|------------------------------|
-| ![read_message_sign](assets/app_images/read_message_sign.jpeg) |   | ![push_notification](assets/app_images/push_notification.PNG) |   |                              |
+| Read Message Sign After Shakil Checked Message |   | Push Notification           |   
+|-------------------------------------------------|---|-----------------------------|
+| ![read_message_sign](assets/app_images/read_message_sign.jpeg) |   | ![push_notification](assets/app_images/push_notification.PNG) |   
 
 
 
