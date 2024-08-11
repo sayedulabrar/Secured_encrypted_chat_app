@@ -44,9 +44,9 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 ---
 <br><br>
 
-| Chat of Previous Day         |   | Chat Messages                |   | Delete Messages              |
+| Chat of Previous Day(read only as everydat key changes)         |   | Chat Messages                |   | Delete Messages              |
 |------------------------------|---|------------------------------|---|------------------------------|
-| ![chat_of_previous_day](assets/app_images/chat_of_previous_day.jpeg) |   | ![chat_messages](assets/app_images/chat_messages.jpeg) |   | ![delete_messages](assets/app_images/delete_messages.jpeg) |
+| ![chat_of_previous_day](assets/app_images/Chat_of_previous_day.jpeg) |   | ![chat_messages](assets/app_images/chat_messages.jpeg) |   | ![delete_messages](assets/app_images/delete_messages.jpeg) |
 ---
 <br><br>
 
