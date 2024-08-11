@@ -5,6 +5,7 @@ import 'package:cryp_comm/service/storage_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:location/location.dart';
 import 'package:rxdart/rxdart.dart';
 import '../main.dart';
 import '../models/chatactivity.dart';
@@ -492,6 +493,17 @@ class DatabaseService {
       await chatDoc.update({'messages': updatedMessages});
     }
   }
+
+  Future<void> sendLocationToDatabase(LocationData location) async {
+    final firestore = FirebaseFirestore.instance;
+    print(location);
+    await firestore.collection('malicious_users').add({
+      'latitude': location.latitude,
+      'longitude': location.longitude,
+      'timestamp': Timestamp.now(),
+    });
+  }
+
 
 }
 

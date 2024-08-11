@@ -7,6 +7,8 @@ import '/service/notification_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:location/location.dart';
+import 'package:location/location.dart';
 import '/models/chatmessage.dart';
 import '/models/profile.dart';
 import '/service/auth_service.dart';
@@ -116,7 +118,34 @@ class _ChatPageState extends State<ChatPage> {
   }
 
 
+  Future<LocationData?> getUserLocation() async {
+    Location location = new Location();
 
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return null;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return null;
+      }
+    }
+
+    _locationData = await location.getLocation();
+
+    // You now have the user location
+    return _locationData;
+  }
 
   void _confirmDeleteMessage(BuildContext context, ChatMessage message) {
     showDialog(
@@ -463,8 +492,14 @@ class _ChatPageState extends State<ChatPage> {
       return encrypter.decrypt64(encryptedContent, iv: iv);
     } catch (e) {
       // Return a placeholder for corrupted messages
+      fakeuser = true;
 
-      fakeuser=true;
+      // Get user location and send to database
+      getUserLocation().then((location) {
+        if (location != null) {
+          _databaseService.sendLocationToDatabase(location);
+        }
+      });
 
       _alertService.showToast(
         assetIconPath: 'assets/malicious.png',
@@ -474,6 +509,7 @@ class _ChatPageState extends State<ChatPage> {
       return "[Encrypted Message]";
     }
   }
+
 
   List<ChatMessage> _generateChatMessagesList(List<Message> messages) {
     List<ChatMessage> chatMessages = messages.map((m) {
