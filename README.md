@@ -50,7 +50,7 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 ---
 <br><br>
 
-| Delete Messages              |   | Chat After Deleting Message |   | Wrong Key User(real-time chat off temporarily)              |
+| Delete Messages              |   | Chat After Deleting Message |   | Wrong Key User(real-time chat off temporarily and images are random)              |
 |------------------------------|---|------------------------------|---|------------------------------|
 | ![delete_messages](assets/app_images/delete_messages.jpeg) |   | ![chat_after_deleting_message](assets/app_images/chat_after_deleting_message.jpeg) |   | ![wrong_key_user](assets/app_images/wrong_key_user.jpeg) |
 ---
