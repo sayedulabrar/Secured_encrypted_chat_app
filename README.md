@@ -13,6 +13,8 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 
 ## App Pages
 
+[disabled users are indicated using red sign on their user type and in Add user page Icons.block .]
+
 | Log In Page                 |   | Home Page                  |   | Recent Chat                  |
 |-----------------------------|---|----------------------------|---|------------------------------|
 | ![login](assets/app_images/login.jpeg) |   | ![home](assets/app_images/home.jpeg) |   | ![recent_chat](assets/app_images/recent_chat.jpeg) |
