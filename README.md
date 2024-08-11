@@ -49,13 +49,13 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 ---
 <br><br>
 
-| Recent Chat After Shakil Checked |   | Shakil Checking Message     |   | Shakil Checking Unread Messages |
+| Recent Chat After messaging Shakil |   | Shakil Checking Message     |   | Shakil Checking Unread Messages |
 |---------------------------------|---|----------------------------|---|-------------------------------|
 | ![recent_chat_after_shakil_checked](assets/app_images/recent_chat_after_shakil_checked.jpeg) |   | ![shakil_checking_message](assets/app_images/shakil_checking_message.jpeg) |   | ![shakil_checking_unread_messages](assets/app_images/shakil_checking_unread_messages.jpeg) |
 ---
 <br><br>
 
-| Read Message Sign             |  
+| Read Message Sign After Shakil Checked Message            |  
 |-------------------------------|
 | ![read_message_sign](assets/app_images/read_message_sign.jpeg) |                               |
 
