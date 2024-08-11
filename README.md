@@ -21,7 +21,7 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 ---
 <br><br>
 
-| Navbar                      |   | Profile                    |   | Updated Profile              |
+| Navbar For Admin                      |   | Profile                    |   | Updated Profile              |
 |-----------------------------|---|----------------------------|---|------------------------------|
 | ![navbar](assets/app_images/navbar.jpeg) |   | ![profile](assets/app_images/profile.jpeg) |   | ![updated_profile](assets/app_images/updated_profile.jpeg) |
 ---
