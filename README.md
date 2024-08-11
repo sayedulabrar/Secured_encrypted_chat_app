@@ -31,7 +31,7 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 ---
 <br><br>
 
-| Add User Dialogue           |   | Change User Role           |   | Date Key                     |
+| Add User Dialogue           |   | Change User account's availability           |   | Date Key                     |
 |-----------------------------|---|----------------------------|---|------------------------------|
 | ![Add_user_dialogue](assets/app_images/Add_user_dialogue.jpeg) |   | ![change_user_role](assets/app_images/change_user_role.jpeg) |   | ![date_key](assets/app_images/date_key.jpeg) |
 ---
