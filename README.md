@@ -44,13 +44,13 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 ---
 <br><br>
 
-| Date Wise Chat              |   | Chat of Previous Day         |   | Chat Messages                |
+| Date Wise Chat              |   | Chat of Previous Day(read only as everyday key changes)        |   | Chat Messages (only present day real-time chat available)               |
 |-----------------------------|---|------------------------------|---|------------------------------|
 | ![date_wise_chat](assets/app_images/date_wise_chat.jpeg) |   | ![chat_of_previous_day](assets/app_images/Chat_of_previous_day.jpeg) |   | ![chat_messages](assets/app_images/chat_messages.jpeg) |
 ---
 <br><br>
 
-| Delete Messages              |   | Chat After Deleting Message |   | Wrong Key User               |
+| Delete Messages              |   | Chat After Deleting Message |   | Wrong Key User(real-time chat off temporarily)              |
 |------------------------------|---|------------------------------|---|------------------------------|
 | ![delete_messages](assets/app_images/delete_messages.jpeg) |   | ![chat_after_deleting_message](assets/app_images/chat_after_deleting_message.jpeg) |   | ![wrong_key_user](assets/app_images/wrong_key_user.jpeg) |
 ---
