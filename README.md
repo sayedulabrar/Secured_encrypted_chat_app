@@ -10,10 +10,9 @@ To download the final version of **SecureChat**, check the **finalapp** folder.
 
 Welcome to **SecureChat** - the most robust, feature-rich, and secure chat application designed to keep your conversations private and your data safe. Dive into a world where your messages are shielded from prying eyes, and enjoy a seamless communication experience with cutting-edge features!
 
-
 ## App Pages
 
-**[📝disabled users are indicated using red sign on their user type and in Add user page Icons.block .]**
+**[📝 Disabled users are indicated using a red sign on their user type and in the Add User page Icons.block.]**
 
 | Log In Page                 |   | Home Page                  |   | Recent Chat                  |
 |-----------------------------|---|----------------------------|---|------------------------------|
@@ -21,45 +20,45 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 ---
 <br><br>
 
-| Navbar For Admin                      |   | Profile                    |   | Updated Profile              |
-|-----------------------------|---|----------------------------|---|------------------------------|
-| ![navbar](assets/app_images/navbar.jpeg) |   | ![profile](assets/app_images/profile.jpeg) |   | ![updated_profile](assets/app_images/updated_profile.jpeg) |
+| Navbar For Admin                      |   | Navbar For User                |   | Profile                    |
+|-----------------------------|---|----------------------------|---|----------------------------|
+| ![navbar](assets/app_images/navbar.jpeg) |   | ![navbar_for_user](assets/app_images/navbar_for_user.jpeg) |   | ![profile](assets/app_images/profile.jpeg) |
 ---
 <br><br>
 
-| Update Profile Complete     |   | Change Password            |   | Add Users Page               |
-|-----------------------------|---|----------------------------|---|------------------------------|
-| ![update_profile_complete](assets/app_images/update_profile_complete.jpeg) |   | ![change_password](assets/app_images/change_password.jpeg) |   | ![Add_users_page](assets/app_images/Add_users_page.jpeg) |
+| Updated Profile              |   | Update Profile Complete     |   | Change Password            |
+|------------------------------|---|-----------------------------|---|----------------------------|
+| ![updated_profile](assets/app_images/updated_profile.jpeg) |   | ![update_profile_complete](assets/app_images/update_profile_complete.jpeg) |   | ![change_password](assets/app_images/change_password.jpeg) |
 ---
 <br><br>
 
-| Add User Dialogue           |   | Change User account's availability           |   | Date Key                     |
-|-----------------------------|---|----------------------------|---|------------------------------|
-| ![Add_user_dialogue](assets/app_images/Add_user_dialogue.jpeg) |   | ![change_user_role](assets/app_images/change_user_role.jpeg) |   | ![date_key](assets/app_images/date_key.jpeg) |
+| Add Users Page               |   | Add User Dialogue           |   | Change User Account's Availability |
+|------------------------------|---|-----------------------------|---|-----------------------------------|
+| ![Add_users_page](assets/app_images/Add_users_page.jpeg) |   | ![Add_user_dialogue](assets/app_images/Add_user_dialogue.jpeg) |   | ![change_user_role](assets/app_images/change_user_role.jpeg) |
 ---
 <br><br>
 
-| Date Wise Chat              |   | Chat Messages              |   | Delete Messages              |
-|-----------------------------|---|----------------------------|---|------------------------------|
-| ![date_wise_chat](assets/app_images/date_wise_chat.jpeg) |   | ![chat_messages](assets/app_images/chat_messages.jpeg) |   | ![delete_messages](assets/app_images/delete_messages.jpeg) |
+| Date Key                     |   | Date Wise Chat              |   | Chat Messages                |
+|------------------------------|---|-----------------------------|---|------------------------------|
+| ![date_key](assets/app_images/date_key.jpeg) |   | ![date_wise_chat](assets/app_images/date_wise_chat.jpeg) |   | ![chat_messages](assets/app_images/chat_messages.jpeg) |
 ---
 <br><br>
 
-| Chat After Deleting Message |   | Wrong Key User             |   | Message to Shakil            |
-|-----------------------------|---|----------------------------|---|------------------------------|
-| ![chat_after_deleting_message](assets/app_images/chat_after_deleting_message.jpeg) |   | ![wrong_key_user](assets/app_images/wrong_key_user.jpeg) |   | ![message_to_shakil](assets/app_images/message_to_shakil.jpeg) |
+| Delete Messages              |   | Chat After Deleting Message |   | Wrong Key User               |
+|------------------------------|---|-----------------------------|---|------------------------------|
+| ![delete_messages](assets/app_images/delete_messages.jpeg) |   | ![chat_after_deleting_message](assets/app_images/chat_after_deleting_message.jpeg) |   | ![wrong_key_user](assets/app_images/wrong_key_user.jpeg) |
 ---
 <br><br>
 
-| Recent Chat After messaging Shakil |   | Shakil Checking Message     |   | Shakil Checking Unread Messages |
-|---------------------------------|---|----------------------------|---|-------------------------------|
-| ![recent_chat_after_shakil_checked](assets/app_images/recent_chat_after_shakil_checked.jpeg) |   | ![shakil_checking_message](assets/app_images/shakil_checking_message.jpeg) |   | ![shakil_checking_unread_messages](assets/app_images/shakil_checking_unread_messages.jpeg) |
+| Message to Shakil            |   | Recent Chat After Messaging Shakil |   | Shakil Checking Message     |
+|------------------------------|---|-------------------------------|---|----------------------------|
+| ![message_to_shakil](assets/app_images/message_to_shakil.jpeg) |   | ![recent_chat_after_shakil_checked](assets/app_images/recent_chat_after_shakil_checked.jpeg) |   | ![shakil_checking_message](assets/app_images/shakil_checking_message.jpeg) |
 ---
 <br><br>
 
-| Read Message Sign After Shakil Checked Message            |  | Disabled User Trying to Login | | |
-|-----------------------------|---|------------------------------|---|------------------------------|
-| ![read_message_sign](assets/app_images/read_message_sign.jpeg)| | ![disabled_user_trying_to_login](assets/app_images/disabled_user_trying_to_login.jpeg) |    ||           
+| Shakil Checking Unread Messages |   | Read Message Sign After Shakil Checked Message |   | Disabled User Trying to Login |
+|---------------------------------|---|-----------------------------------------------|---|------------------------------|
+| ![shakil_checking_unread_messages](assets/app_images/shakil_checking_unread_messages.jpeg) |   | ![read_message_sign](assets/app_images/read_message_sign.jpeg) |   | ![disabled_user_trying_to_login](assets/app_images/disabled_user_trying_to_login.jpeg) |
 
 ## 🔒 Key Features
 
