@@ -95,15 +95,34 @@ class DatabaseService {
   }
 
 
-  Future<void>updateProfileImage(File img)async {
-    String uid = _firebaseAuth.currentUser!.uid;
-    String? profileURL = await _storageService.uploadUserPfp(
-      file: img, // Replace with your image file variable
-      uid: uid,
-    );
-    await _userCollection.doc(uid).update({'pfpURL':profileURL});
-    _authService.fetchPersonalProfile();
+  Future<void> updateProfileImage(File img) async {
+    try {
+      String uid = _authService.user!.uid;
+      DocumentSnapshot userDoc = await _userCollection.doc(uid).get();
+      Profile? currentProfile = userDoc.data() as Profile?;
+
+      // Delete previous profile picture if it exists
+      if (currentProfile != null && currentProfile.pfpURL != null && currentProfile.pfpURL!.isNotEmpty) {
+        await _storageService.deleteFileFromStorage(url: currentProfile.pfpURL!);
+      }
+
+      // Upload new profile picture
+      String? newProfileURL = await _storageService.uploadUserPfp(file: img, uid: uid);
+
+      if (newProfileURL != null) {
+        // Update profile document with new profile picture URL
+        await _userCollection.doc(uid).update({'pfpURL': newProfileURL});
+        // Optionally, you can refresh the profile after the update
+        await _authService.fetchPersonalProfile();
+      } else {
+        throw Exception('Failed to upload new profile picture.');
+      }
+    } catch (e) {
+      // Rethrow the error to be caught by the calling method
+      throw Exception('Error updating profile picture: $e');
+    }
   }
+
 
   Future<void> signupWithRole(String email, String password, String role,File img) async {
     User? adminUser = _firebaseAuth.currentUser;

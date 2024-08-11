@@ -105,9 +105,14 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   }) =>
       InkWell(
         splashColor: Colors.black26,
-        onTap: ()=>_navigationService.pushNamed('/profile'),
+        onTap: () {
+          setState(() {
+            _selectedIndex = -1; // Reset the selected index when header is tapped
+          });
+          _navigationService.pushReplacementNamed('/profile');
+        },
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 40, horizontal: 10), // Changed -10 to 10
+          padding: EdgeInsets.symmetric(vertical: 40, horizontal: 10),
           child: Row(
             children: [
               CircleAvatar(
@@ -119,7 +124,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                     placeholder: (context, url) => Image.asset(
                       'assets/loading.gif',
                       fit: BoxFit.cover,
-                      width: 60.0, // Adjust width and height to match the CircleAvatar size
+                      width: 60.0,
                       height: 60.0,
                     ),
                     errorWidget: (context, url, error) => Icon(Icons.error, size: 30.0),
@@ -129,7 +134,6 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                   ),
                 ),
               ),
-
               SizedBox(width: 20),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

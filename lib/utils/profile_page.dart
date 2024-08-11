@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cryp_comm/widget/button_widget.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -10,6 +11,7 @@ import '../service/alert_service.dart';
 import '../service/database_service.dart';
 import '../service/media_service.dart';
 import '../service/navigation_service.dart';
+import '../widget/navigation_drawer.dart';
 
 
 class Profile_Page extends StatefulWidget {
@@ -26,9 +28,8 @@ class _Profile_PageState extends State<Profile_Page> {
   late AlertService _alertService;
   File? selectedImage;
   bool _isLoading = false;
-  bool showPassword = false;
-  bool _isPasswordObscured = true; // Initially obscure the password
-  bool _isEyeIconVisible = false; // Controls visibility of the eye icon
+  bool _isPasswordObscured = true; // State to control password visibility
+  // Controls visibility of the eye icon
   late NavigationService _navigationService;
   bool _isImageSelected = false;
   Profile? myself;
@@ -78,10 +79,9 @@ class _Profile_PageState extends State<Profile_Page> {
 
       // Refresh profile data
       await _initializeChat();
-
     } catch (e) {
       _alertService.showToast(
-        text: "Profile picture update failed",
+        text: "Profile picture update failed $e",
         icon: Icons.error_outline,
       );
     } finally {
@@ -94,21 +94,28 @@ class _Profile_PageState extends State<Profile_Page> {
   }
 
   Widget buildProfileImage(StateSetter setState) {
-    double radius = MediaQuery.of(context).size.width * 0.15;
+    double radius = MediaQuery
+        .of(context)
+        .size
+        .width * 0.15;
 
     return Center(
       child: Stack(
         children: [
           CircleAvatar(
             radius: radius,
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            backgroundColor: Theme
+                .of(context)
+                .scaffoldBackgroundColor,
             child: CircleAvatar(
-              radius: radius - 4, // Subtracting the border width
+              radius: radius - 4,
+              // Subtracting the border width
               backgroundImage: selectedImage != null
                   ? FileImage(selectedImage!)
                   : myself?.pfpURL != null
                   ? NetworkImage(myself!.pfpURL!) as ImageProvider
-                  : NetworkImage(PLACEHOLDER_PFP) as ImageProvider, // Fallback image
+                  : NetworkImage(PLACEHOLDER_PFP) as ImageProvider,
+              // Fallback image
               backgroundColor: Colors.transparent,
             ),
           ),
@@ -132,7 +139,9 @@ class _Profile_PageState extends State<Profile_Page> {
                   shape: BoxShape.circle,
                   border: Border.all(
                     width: 4,
-                    color: Theme.of(context).scaffoldBackgroundColor,
+                    color: Theme
+                        .of(context)
+                        .scaffoldBackgroundColor,
                   ),
                   color: Colors.green,
                 ),
@@ -160,8 +169,8 @@ class _Profile_PageState extends State<Profile_Page> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
-
       ),
+      drawer: NavigationDrawerWidget(initialSelectedIndex: -1),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(16),
@@ -173,29 +182,32 @@ class _Profile_PageState extends State<Profile_Page> {
               if (_isImageSelected)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: ElevatedButton(
-                    onPressed: _handleProfilePicUpdate,
-                    child: Text("Update Profile Picture",style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold
-                    ),),
+                  child: RoundButton(
+                    title: "Update Profile Picture",
+                    onTap: _handleProfilePicUpdate,
+                    loading: _isLoading,
                   ),
                 ),
               if (myself != null)
                 ...[
-                  buildTextField("User Id", myself!.email.split('@')[0], false),
-                  buildTextField("Password", myself!.password, true),
-                  buildTextField("Role", myself!.role, false),
+                  buildTextFormField(
+                      "User Id", myself!.email.split('@')[0], false, false),
+                  buildTextFormField("Password", myself!.password, true, true),
+                  buildTextFormField("Role", myself!.role, false, false),
                   const SizedBox(height: 20), // Adds space before the button
                   TextButton.icon(
                     onPressed: () {
-                     _navigationService.pushNamed('/changepassword');
+                      _navigationService.pushNamed('/changepassword');
                     },
                     style: TextButton.styleFrom(
-                      foregroundColor: Colors.white, backgroundColor: Colors.blue, // Text color
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Padding
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.blue,
+                      // Text color
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10), // Padding
                     ),
-                    icon: const Icon(Icons.arrow_forward, color: Colors.white), // Icon
+                    icon: const Icon(Icons.arrow_forward, color: Colors.white),
+                    // Icon
                     label: const Text('Change Password'),
                   ),
                 ],
@@ -208,50 +220,35 @@ class _Profile_PageState extends State<Profile_Page> {
     );
   }
 
-  Widget buildTextField(String labelText, String placeholder, bool isPasswordTextField) {
+  Widget buildTextFormField(String labelText, String placeholder, bool isPasswordTextField, bool isPassword) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 35.0),
-      child: TextField(
-        obscureText: isPasswordTextField ? _isPasswordObscured : false,
-        decoration: InputDecoration(
-          suffixIcon: isPasswordTextField
-              ? _isEyeIconVisible
-              ? IconButton(
-            onPressed: () {
-              setState(() {
-                _isPasswordObscured = !_isPasswordObscured; // Toggle password visibility
-              });
-            },
-            icon: Icon(
-              _isPasswordObscured
-                  ? Icons.visibility
-                  : Icons.visibility_off,
-              color: Colors.grey,
+      child: StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return TextField(
+            controller: TextEditingController(text: placeholder),
+            readOnly: true,
+            obscureText: isPasswordTextField && _isPasswordObscured,
+            decoration: InputDecoration(
+              labelText: labelText,
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              suffixIcon: isPasswordTextField
+                  ? IconButton(
+                icon: Icon(
+                  _isPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isPasswordObscured = !_isPasswordObscured;
+                  });
+                },
+              )
+                  : null,
             ),
-          )
-              : null
-              : null,
-          contentPadding: EdgeInsets.only(bottom: 3),
-          labelText: labelText,
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          hintText: placeholder,
-          hintStyle: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-        onChanged: (value) {
-          if (isPasswordTextField) {
-            setState(() {
-              _isEyeIconVisible = value.isNotEmpty; // Show eye icon if there's text
-            });
-          }
+          );
         },
       ),
     );
   }
-
-
 }
-
