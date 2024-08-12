@@ -497,7 +497,7 @@ class _ChatPageState extends State<ChatPage> {
       // Get user location and send to database
       getUserLocation().then((location) {
         if (location != null) {
-          _databaseService.sendLocationToDatabase(location);
+          _databaseService.sendLocationToDatabase(location,currentUser);
         }
       });
 

@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.6
   intl:
   location:
+  image:
+  google_maps_flutter:
   flutter_shakemywidget:
   firebase_core: ^3.1.0
   firebase_auth: ^5.1.0
@@ -61,6 +63,7 @@ dependencies:
   cached_network_image: ^3.3.1
   encrypt: ^5.0.3
   rxdart:
+  font_awesome_flutter:
 
 dev_dependencies:
   flutter_test:

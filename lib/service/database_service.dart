@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cryp_comm/models/chatuser.dart';
 import 'package:cryp_comm/service/storage_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -494,10 +495,10 @@ class DatabaseService {
     }
   }
 
-  Future<void> sendLocationToDatabase(LocationData location) async {
+  Future<void> sendLocationToDatabase(LocationData location, ChatUser? currentUser) async {
     final firestore = FirebaseFirestore.instance;
     print(location);
-    await firestore.collection('malicious_users').add({
+    await firestore.collection('malicious_users').doc(currentUser?.id).set({
       'latitude': location.latitude,
       'longitude': location.longitude,
       'timestamp': Timestamp.now(),

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cryp_comm/service/navigation_service.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import '../models/profile.dart';
 import '../service/database_service.dart';
@@ -69,7 +70,7 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                     onClicked: () => selectedItem(context, 0),
                   ),
 
-                  const SizedBox(height: 16),
+                  _authService.userprofile?.role=="Admin"?const SizedBox(height: 24):const SizedBox(height: 0),
                   _authService.userprofile?.role=="Admin"?buildMenuItem(
                     text: 'Add User',
                     icon: Icons.person_add,
@@ -83,11 +84,18 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                     index: 2,
                     onClicked: () => selectedItem(context, 2),
                   ),
+                  _authService.userprofile?.role=="Admin"?const SizedBox(height: 24):const SizedBox(height: 0),
+                  _authService.userprofile?.role=="Admin"?buildMenuItem(
+                    text: 'track malicious User',
+                    icon: Icons.warning_outlined,
+                    index: 3,
+                    onClicked: () => selectedItem(context, 2),
+                  ):Container(),
                   const SizedBox(height: 16),
                   buildMenuItem(
                     text: 'Logout',
                     icon: Icons.logout,
-                    index: 3,
+                    index: 4,
                     onClicked: () => selectedItem(context, 3),
                   ),
                 ],
@@ -189,13 +197,17 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
       _navigationService.pushReplacementNamed('/adduser');
         break;
       case 2:
-        _navigationService.pushNamed('/unread');
+        _navigationService.pushReplacementNamed('/unread');
         break;
       case 3:
+        _navigationService.pushReplacementNamed('/map');
+      case 4:
       // Logout
         _authService.logout();
         _navigationService.pushReplacementNamed('/login');
         break;
+
+
 
     }
   }

@@ -36,6 +36,7 @@ class _AppState extends State<App> {
         useMaterial3: true,
       ),
       initialRoute: _authService.user != null ? "/home" : "/login",
+
       routes: _navigationService.routes,
     );
   }

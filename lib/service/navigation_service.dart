@@ -1,4 +1,5 @@
 import 'package:cryp_comm/utils/add_user.dart';
+import 'package:cryp_comm/utils/malicious_user_track.dart';
 import 'package:cryp_comm/utils/profile_page.dart';
 import 'package:cryp_comm/utils/unread_messages.dart';
 import 'package:cryp_comm/utils/update_password.dart';
@@ -18,7 +19,8 @@ class NavigationService {
     '/verify-email':(context) => VerifyEmailPage(),
     '/unread':(context) => UnreadMessages(),
     '/profile': (context) => Profile_Page(),
-    '/changepassword': (context) => ChangePassword()
+    '/changepassword': (context) => ChangePassword(),
+    '/map': (context) => MapScreen()
   };
 
   GlobalKey<NavigatorState>? get navigatorKey => _navigatorKey;
