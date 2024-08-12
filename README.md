@@ -4,9 +4,6 @@
 
 To download the final version of **SecureChat**, check the **finalapp** folder.
 
-## To check the app use these 3 accounts and don't use extra space.
-**uid**:sayedulabrar14045, unknown,unknown2
-**password**: Abrar123
 
 Welcome to **SecureChat** - the most robust, feature-rich, and secure chat application designed to keep your conversations private and your data safe. Dive into a world where your messages are shielded from prying eyes, and enjoy a seamless communication experience with cutting-edge features!
 
@@ -65,7 +62,12 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 | Shakil Checking Unread Messages(it has shaking animationwhich shakes the message periodically) |   | Read Message Sign After Shakil Checked Message |   | Push Notification           |
 |-------------------------------|---|-----------------------------------------------|---|-----------------------------|
 | ![shakil_checking_unread_messages](assets/app_images/shakil_checking_unread_messages.jpeg) |   | ![read_message_sign](assets/app_images/read_message_sign.jpeg) |   | ![push_notification](assets/app_images/push_notification.PNG) |
+---
+<br><br>
 
+| No Malicious User            |   | Malicious User Found 1         |   | Malicious User Found 2      |
+|------------------------------|---|-------------------------------|---|----------------------------|
+| ![no_malicious_user](assets/app_images/no_malicious_user.jpeg) |   | ![malicious_user_found_1](assets/app_images/malicious_user_found_1.jpeg) |   | ![malicious_user_found_2](assets/app_images/malicious_user_found_2.jpeg) |
 
 
 
@@ -99,6 +101,10 @@ Each day a new chat is generated, and users can use a shared key to chat for tha
 
 ### **8. Profile Update**
 - User or Admin can update profile image and change password.Other info are not allowed to update.
+
+### **8. Malicious User Tracking**
+- Track malicious users on a Google Map with circular image markers indicating their locations. Each marker displays the user ID and timestamp of the incorrect key usage, allowing for effective monitoring and management of suspicious activities.
+
 
 
 Please ensure you download the latest version to benefit from all updates and security enhancements.
