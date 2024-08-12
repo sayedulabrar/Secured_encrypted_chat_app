@@ -102,6 +102,10 @@ Each day a new chat is generated, and users can use a shared key to chat for tha
 ### **8. Profile Update**
 - User or Admin can update profile image and change password.Other info are not allowed to update.
 
+### **8. Malicious User Tracking**
+- Track malicious users on a Google Map with circular image markers indicating their locations. Each marker displays the user ID and timestamp of the incorrect key usage, allowing for effective monitoring and management of suspicious activities.
+
+
 
 Please ensure you download the latest version to benefit from all updates and security enhancements.
 
