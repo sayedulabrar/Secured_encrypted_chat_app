@@ -62,7 +62,12 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 | Shakil Checking Unread Messages(it has shaking animationwhich shakes the message periodically) |   | Read Message Sign After Shakil Checked Message |   | Push Notification           |
 |-------------------------------|---|-----------------------------------------------|---|-----------------------------|
 | ![shakil_checking_unread_messages](assets/app_images/shakil_checking_unread_messages.jpeg) |   | ![read_message_sign](assets/app_images/read_message_sign.jpeg) |   | ![push_notification](assets/app_images/push_notification.PNG) |
+---
+<br><br>
 
+| No Malicious User            |   | Malicious User Found 1         |   | Malicious User Found 2      |
+|------------------------------|---|-------------------------------|---|----------------------------|
+| ![no_malicious_user](assets/app_images/no_malicious_user.jpeg) |   | ![malicious_user_found_1](assets/app_images/malicious_user_found_1.jpeg) |   | ![malicious_user_found_2](assets/app_images/malicious_user_found_2.jpeg) |
 
 
 
