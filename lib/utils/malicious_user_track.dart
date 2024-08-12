@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
@@ -12,9 +13,15 @@ import 'package:intl/intl.dart';
 import '../widget/navigation_drawer.dart';
 
 class MapScreen extends StatefulWidget {
+  final LatLng location;
+
+  // Constructor with required location parameter
+  MapScreen({required this.location});
+
   @override
   _MapScreenState createState() => _MapScreenState();
 }
+
 
 class _MapScreenState extends State<MapScreen> {
   GoogleMapController? _mapController;
@@ -22,11 +29,19 @@ class _MapScreenState extends State<MapScreen> {
   List<LatLng> _userLocations = [];
   int _currentUserIndex = 0;
 
+
+
   @override
   void initState() {
     super.initState();
     _loadMarkers();
   }
+
+
+
+
+
+
 
   Future<void> _loadMarkers() async {
     List<Map<String, dynamic>> users = await getMaliciousUsers();
@@ -70,6 +85,8 @@ class _MapScreenState extends State<MapScreen> {
       _userLocations = locations;
       if (_userLocations.isNotEmpty) {
         _setCameraToLocation(_userLocations[_currentUserIndex]);
+      }else{
+        _setCameraToLocation(widget.location);
       }
     });
   }
@@ -170,19 +187,20 @@ class _MapScreenState extends State<MapScreen> {
             onMapCreated: (controller) {
               _mapController = controller;
             },
+            mapType: MapType.normal,
             markers: _markers,
             initialCameraPosition: CameraPosition(
-              target: _userLocations.isNotEmpty ? _userLocations[0] : LatLng(0, 0),
-              zoom: 12.0, // Adjust zoom level as needed
+              target: _userLocations.isNotEmpty ? _userLocations[0] : widget.location,
+              zoom: 17.0, // Adjust zoom level as needed
             ),
           ),
           Positioned(
-            top: 0,
+            top: 10,
             right: 0,
             child: ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(Colors.blue), // Set button color to blue
-                minimumSize: WidgetStateProperty.all(Size(200, 60)), // Adjust size of the button
+                backgroundColor: WidgetStateProperty.all(Colors.black), // Set button color to blue
+                minimumSize: WidgetStateProperty.all(Size(80, 40)), // Adjust size of the button
                 shape: WidgetStateProperty.all(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12), // Optional: Add rounded corners
                 )),
@@ -198,7 +216,7 @@ class _MapScreenState extends State<MapScreen> {
                   ),
                   SizedBox(width: 8), // Add some space between the icon and text
                   Text(
-                    'Check Next',
+                    _userLocations.isNotEmpty?'Check Next':'No Malacious User Found',
                     style: TextStyle(
                       fontSize: 16, // Adjust font size as needed
                       color: Colors.white, // Set text color to white

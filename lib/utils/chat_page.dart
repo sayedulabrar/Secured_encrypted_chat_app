@@ -8,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:location/location.dart';
-import 'package:location/location.dart';
+
 import '/models/chatmessage.dart';
 import '/models/profile.dart';
 import '/service/auth_service.dart';

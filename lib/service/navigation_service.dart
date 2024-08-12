@@ -20,7 +20,6 @@ class NavigationService {
     '/unread':(context) => UnreadMessages(),
     '/profile': (context) => Profile_Page(),
     '/changepassword': (context) => ChangePassword(),
-    '/map': (context) => MapScreen()
   };
 
   GlobalKey<NavigatorState>? get navigatorKey => _navigatorKey;

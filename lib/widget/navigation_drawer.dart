@@ -1,11 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cryp_comm/service/navigation_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import '../models/profile.dart';
 import '../service/database_service.dart';
 import '../service/auth_service.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../utils/malicious_user_track.dart';
 
 class NavigationDrawerWidget extends StatefulWidget {
   final int initialSelectedIndex;
@@ -21,14 +25,19 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   late DatabaseService _databaseService;
   late AuthService _authService;
   late NavigationService _navigationService;
-
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   String imageUrl='';
   String name='';
   late int _selectedIndex;
+  late LatLng location;
 
   @override
   void initState() {
     super.initState();
+    Future.microtask(() async {
+      await _retrieveLocation();
+
+    });
     _databaseService = _getIt.get<DatabaseService>();
     _authService = _getIt.get<AuthService>();
     _navigationService = _getIt.get<NavigationService>();
@@ -45,6 +54,32 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
       });
     }
   }
+
+
+  Future<void> _retrieveLocation() async {
+    String? longitudeString  = await _secureStorage.read(key: 'longitude');
+    String? latitudeString = await _secureStorage.read(key: 'latitude');
+
+    if (longitudeString != null && latitudeString != null) {
+      try {
+        double longitude = double.parse(longitudeString);
+        double latitude = double.parse(latitudeString);
+        location = LatLng(latitude, longitude);
+
+      } catch (e) {
+        print('Error parsing location data: $e');
+        location = LatLng(22.15, 95.125);
+        // Handle parsing error if needed
+      }
+    } else {
+      print('Location data not found');
+      location = LatLng(22.15, 95.125);
+      // Handle missing location data if needed
+    }
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -89,14 +124,14 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                     text: 'track malicious User',
                     icon: Icons.warning_outlined,
                     index: 3,
-                    onClicked: () => selectedItem(context, 2),
+                    onClicked: () => selectedItem(context, 3),
                   ):Container(),
                   const SizedBox(height: 16),
                   buildMenuItem(
                     text: 'Logout',
                     icon: Icons.logout,
                     index: 4,
-                    onClicked: () => selectedItem(context, 3),
+                    onClicked: () => selectedItem(context, 4),
                   ),
                 ],
               ),
@@ -200,7 +235,9 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
         _navigationService.pushReplacementNamed('/unread');
         break;
       case 3:
-        _navigationService.pushReplacementNamed('/map');
+        _navigationService.push(MaterialPageRoute(builder: (context) {
+          return MapScreen(location:location);
+        }));
       case 4:
       // Logout
         _authService.logout();

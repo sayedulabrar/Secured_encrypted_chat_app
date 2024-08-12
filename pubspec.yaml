@@ -63,6 +63,7 @@ dependencies:
   cached_network_image: ^3.3.1
   encrypt: ^5.0.3
   rxdart:
+  geolocator:
   font_awesome_flutter:
 
 dev_dependencies:
