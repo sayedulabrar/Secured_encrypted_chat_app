@@ -74,56 +74,66 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 250,
-            ),
-            AnimatedBuilder(
-              animation: _animationController,
-              builder: (context, child) {
-                return Opacity(
-                  opacity: _fadeOutAnimation.value,
-                  child: Transform.translate(
-                    offset: Offset(0.0, -100 * _jumpAnimation.value), // Adjust initial jump height
-                    child: Transform.scale(
-                      scale: _imageSizeAnimation.value,
-                      child: Image.asset(
-                        'assets/cryp.png',
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 20), // Add some space between the image and the text
-            AnimatedBuilder(
-              animation: _animationController,
-              builder: (context, child) {
-                return Opacity(
-                  opacity: _fadeOutAnimation.value,
-                  child: Transform.translate(
-                    offset: Offset(0.0, -100 * _jumpAnimation.value), // Adjust initial jump height
-                    child: Transform.scale(
-                      scale: _textSizeAnimation.value,
-                      child: Text(
-                        'Cryp_Comm',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Background Image
+          Image.asset(
+            'assets/army2.jpg',
+            fit: BoxFit.cover,
+          ),
+          // Foreground Content
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 250),
+                AnimatedBuilder(
+                  animation: _animationController,
+                  builder: (context, child) {
+                    return Opacity(
+                      opacity: _fadeOutAnimation.value,
+                      child: Transform.translate(
+                        offset: Offset(0.0, -100 * _jumpAnimation.value), // Adjust initial jump height
+                        child: Transform.scale(
+                          scale: _imageSizeAnimation.value,
+                          child: Image.asset(
+                            'assets/cryp.png',
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                );
-              },
+                    );
+                  },
+                ),
+                SizedBox(height: 20), // Add some space between the image and the text
+                AnimatedBuilder(
+                  animation: _animationController,
+                  builder: (context, child) {
+                    return Opacity(
+                      opacity: _fadeOutAnimation.value,
+                      child: Transform.translate(
+                        offset: Offset(0.0, -100 * _jumpAnimation.value), // Adjust initial jump height
+                        child: Transform.scale(
+                          scale: _textSizeAnimation.value,
+                          child: Text(
+                            'Cryp_Comm',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

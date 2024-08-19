@@ -178,7 +178,9 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Malicious Users Map'),
+        title: Text('Malicious Users Map',style: TextStyle(color: Colors.white)),        backgroundColor: Colors.green, // Set the AppBar background color
+        iconTheme: IconThemeData(color: Colors.white),
+
       ),
       drawer: NavigationDrawerWidget(initialSelectedIndex: 3),
       body: Stack(

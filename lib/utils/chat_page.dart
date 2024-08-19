@@ -200,6 +200,8 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green, // Set the AppBar background color
+        iconTheme: IconThemeData(color: Colors.white),
         title: Row(
           children: [
             CircleAvatar(
@@ -224,7 +226,7 @@ class _ChatPageState extends State<ChatPage> {
             SizedBox(
                 width: 8.0), // Add some space between the avatar and the text
             Text(
-              widget.chatUser.email.split('@')[0],
+              widget.chatUser.email.split('@')[0],style: TextStyle(color: Colors.white)
             ),
           ],
         ),

@@ -22,7 +22,8 @@ class ChatTile extends StatelessWidget {
         onTap();
       },
       dense: false,
-      title: Text(userProfile.email.split('@')[0]),
+      title: Text(userProfile.email.split('@')[0],
+      style: TextStyle(color: Colors.black),),
       leading: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 20.0,

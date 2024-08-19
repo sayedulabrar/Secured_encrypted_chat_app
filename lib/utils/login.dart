@@ -1,15 +1,12 @@
-import 'package:cryp_comm/widget/banner.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get_it/get_it.dart';
-import 'package:lottie/lottie.dart';
-import '../widget/button_widget.dart';
-import '/service/alert_service.dart';
-import '/service/navigation_service.dart';
+import '../service/alert_service.dart';
+import '../service/navigation_service.dart';
 import '../constant/consts.dart';
 import '../service/auth_service.dart';
 import '../widget/custom_form_field.dart';
+import '../widget/button_widget.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -29,7 +26,6 @@ class _LoginState extends State<Login> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _authService = _getIt.get<AuthService>();
     _navigationService = _getIt.get<NavigationService>();
@@ -46,88 +42,26 @@ class _LoginState extends State<Login> {
 
   Widget _buildUI() {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final double screenHeight = mediaQuery.size.height;
-    final double screenWidth = mediaQuery.size.width;
-    return SafeArea(
-        child: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
-      child: Column(
-        children: [
-          _headerText(),
-
-          _loginForm(),
-          // _createAnAccountLink()
-        ],
-      ),
-    ));
-  }
-
-  Widget _headerText() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child:  Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            'assets/cryp.png',
-            width: MediaQuery.of(context).size.width * 0.2,
-          ),
-          Text(
-            "CrypComm",
-            style: TextStyle(
-              fontSize:25.0,
-              fontWeight: FontWeight.w800,
-              decoration: TextDecoration.underline,
-            ),
-          ),
-
-        ],
-      ),
-    );
-  }
-
-  Widget _loginForm() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.40,
-      margin: EdgeInsets.symmetric(
-        vertical: MediaQuery.of(context).size.height * 0.05,
+      width: double.infinity,
+      height: double.infinity,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/army2.jpg'), // Use AssetImage with correct path
+          fit: BoxFit.cover, // Fit the image to cover the entire background
+          colorFilter: ColorFilter.mode(
+            Colors.black.withOpacity(0.3), // Optional: Add a color filter for better text contrast
+            BlendMode.darken,
+          ),
+        ),
       ),
-      // EdgeInsets.symmetric                                                                                                                            Form(
-      child: Form(
-        key: _loginFormKey,
+      child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 16.0), // Adjust padding as needed
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CustomFormField(
-                height: MediaQuery.of(context).size.height * 0.1,
-                hintText: "User Id",
-                validationRegEx: EMAIL_VALIDATION_REGEX,
-                onsaved: (value) {
-                  setState(() {
-                    userid = value;
-                  });
-                },
-              ),
-              CustomFormField(
-                height: MediaQuery.of(context).size.height * 0.1,
-                hintText: "Password",
-                validationRegEx: PASSWORD_VALIDATION_REGEX,
-                obscureText: true,
-                onsaved: (value) {
-                  setState(() {
-                    password = value;
-                  });
-                },
-              ),
-              _loginButton(),
 
+              _loginForm(),
             ],
           ),
         ),
@@ -135,14 +69,103 @@ class _LoginState extends State<Login> {
     );
   }
 
+
+
+
+
+  Widget _loginForm() {
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(
+              vertical: MediaQuery.of(context).size.height * 0.05),
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.9),
+            borderRadius: BorderRadius.circular(20.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10.0,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(8.0), // Adjust padding as needed
+                    decoration: BoxDecoration(
+                      color: Colors.black, // Background color
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(50.0), // Circular shape
+                      border: Border.all(
+                        color: Colors.white, // White border color
+                        width: 4.0, // Border width
+                      ),
+                    ),
+                    child: Text(
+                      "CrypComm",
+                      style: TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white, // Text color
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 60.0),
+              Form(
+                key: _loginFormKey,
+                child: Column(
+                  children: [
+                    CustomFormField(
+                      height: MediaQuery.of(context).size.height * 0.1,
+                      hintText: "User Id",
+                      validationRegEx: EMAIL_VALIDATION_REGEX,
+                      onsaved: (value) {
+                        setState(() {
+                          userid = value;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 20.0),
+                    CustomFormField(
+                      height: MediaQuery.of(context).size.height * 0.1,
+                      hintText: "Password",
+                      validationRegEx: PASSWORD_VALIDATION_REGEX,
+                      obscureText: true,
+                      onsaved: (value) {
+                        setState(() {
+                          password = value;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 30.0),
+                    _loginButton(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
   Widget _loginButton() {
     return SizedBox(
-      width: MediaQuery.of(context).size.width,
+      width: double.infinity,
       child: RoundButton(
         title: 'Login',
         onTap: () async {
           setState(() {
-            _isLoading = true; // Set loading to true
+            _isLoading = true;
           });
 
           try {
@@ -161,18 +184,17 @@ class _LoginState extends State<Login> {
               }
             }
           } catch (e) {
-            print("Error during login: $e");
             _alertService.showToast(
               text: "An error occurred during login. Please try again later.",
               icon: Icons.error,
             );
           } finally {
             setState(() {
-              _isLoading = false; // Set loading to false
+              _isLoading = false;
             });
           }
         },
-        loading: _isLoading, // Pass the loading state
+        loading: _isLoading,
       ),
     );
   }

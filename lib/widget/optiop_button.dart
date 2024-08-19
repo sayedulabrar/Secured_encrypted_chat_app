@@ -8,7 +8,7 @@ Widget optionButton({
   return TextButton(
     onPressed: onPressed,
     style: TextButton.styleFrom(
-      foregroundColor: Colors.black, backgroundColor: Colors.transparent, // Transparent background
+      foregroundColor: Colors.black, backgroundColor: Colors.white, // Transparent background
       side: BorderSide(
         color: isSelected ? Colors.blue : Colors.grey, // Border color
         width: 2.0, // Border width
@@ -17,6 +17,8 @@ Widget optionButton({
         borderRadius: BorderRadius.circular(8.0),
       ),
     ),
-    child: Text(text),
+    child: Text(text,style: TextStyle(
+      color: Colors.black
+    ),),
   );
 }

@@ -168,7 +168,9 @@ class _Profile_PageState extends State<Profile_Page> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile"),
+        title: Text("Profile",style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.green, // Set the AppBar background color
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       drawer: NavigationDrawerWidget(initialSelectedIndex: -1),
       body: SingleChildScrollView(
@@ -194,6 +196,9 @@ class _Profile_PageState extends State<Profile_Page> {
                       "User Id", myself!.email.split('@')[0], false, false),
                   buildTextFormField("Password", myself!.password, true, true),
                   buildTextFormField("Role", myself!.role, false, false),
+                  buildTextFormField("Division", myself!.div??"No Division Selected", false, false),
+                  buildTextFormField("Unit", myself!.unit??"No Unit Selected", false, false),
+                  buildTextFormField("Appointment", myself!.appointment??"No Appointment Selected", false, false),
                   const SizedBox(height: 20), // Adds space before the button
                   TextButton.icon(
                     onPressed: () {

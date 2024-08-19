@@ -80,7 +80,7 @@ class AuthService {
       if (credential.user != null) {
         _user = credential.user;
         await checkUserDisabledStatus(email);
-
+        
         await fetchPersonalProfile();
         await _secureStorage.write(key: 'userEmail', value: email);
         await _secureStorage.write(key: 'userPassword', value: password);

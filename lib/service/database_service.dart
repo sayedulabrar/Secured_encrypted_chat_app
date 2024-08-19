@@ -126,7 +126,8 @@ class DatabaseService {
   }
 
 
-  Future<void> signupWithRole(String email, String password, String role,File img) async {
+  Future<void> signupWithRole(String email, String password, String role,String? selectedDiv,
+      String? selectedUnit,String? selectedAppointment,File img) async {
     User? adminUser = _firebaseAuth.currentUser;
     String? adminEmail = adminUser?.email;
 
@@ -149,6 +150,9 @@ class DatabaseService {
           role: role,
           disabled: false,
           pfpURL: pfpURL,
+          div:selectedDiv,
+          unit: selectedUnit,
+          appointment: selectedAppointment
         );
 
         await createUserProfile(user_profile: newUser);

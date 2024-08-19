@@ -35,7 +35,10 @@ class _ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Change Password"),
+        title: Text("Change Password",style: TextStyle(color: Colors.white),),
+        backgroundColor: Colors.green, // Set the AppBar background color
+        iconTheme: IconThemeData(color: Colors.white),
+
 
       ),
       resizeToAvoidBottomInset: false,

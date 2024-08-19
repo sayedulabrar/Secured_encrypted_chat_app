@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cryp_comm/models/profile.dart';
 import 'package:cryp_comm/service/database_service.dart';
+
+import '../constant/consts.dart';
 
 class UserListWidget extends StatelessWidget {
   final FirebaseFirestore firestore;
@@ -34,6 +37,7 @@ class UserListWidget extends StatelessWidget {
             password: doc['password'],
             role: doc['role'],
             disabled: doc['disabled'] ?? false,
+            pfpURL: doc['pfpURL'] ??PLACEHOLDER_PFP
           );
         }).toList();
 
@@ -54,8 +58,8 @@ class UserListWidget extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Confirm User role'),
-                          content: Text("Are you sure you want to change this user's role?"),
+                          title: Text('Confirm disable stats'),
+                          content: Text("Are you sure you want to change this user's disable status?"),
                           actions: [
                             TextButton(
                               child: Text('Cancel'),
@@ -81,9 +85,25 @@ class UserListWidget extends StatelessWidget {
                 subtitle: Text(user.role),
                 leading: CircleAvatar(
                   backgroundColor: user.disabled ? Colors.red : Colors.green,
-                  child: Icon(
-                    user.disabled ? Icons.block : Icons.check,
-                    color: Colors.white,
+                  radius: 25.0,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    radius: 20.0,
+                    child: ClipOval(
+                      child: CachedNetworkImage(
+                        imageUrl: user.pfpURL!,
+                        placeholder: (context, url) => Image.asset(
+                          'assets/loading.gif',
+                          fit: BoxFit.cover,
+                          width: 40.0,
+                          height: 40.0,
+                        ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        fit: BoxFit.cover,
+                        width: 40.0,
+                        height: 40.0,
+                      ),
+                    ),
                   ),
                 ),
               ),

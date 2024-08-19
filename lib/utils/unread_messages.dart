@@ -122,7 +122,9 @@ class _UnreadMessagesState extends State<UnreadMessages> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Unread Messages'),
+        title: const Text('Unread Messages',style: TextStyle(color: Colors.white),),
+        backgroundColor: Colors.green, // Set the AppBar background color
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       drawer: NavigationDrawerWidget(initialSelectedIndex: 2),
       body: Padding(

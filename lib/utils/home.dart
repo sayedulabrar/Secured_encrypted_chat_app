@@ -148,9 +148,14 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Messages'),
-
+        title: Text(
+          'Messages',
+          style: TextStyle(color: Colors.white), // Set the text color to white
+        ),
+        backgroundColor: Colors.green, // Set the AppBar background color to black
+        iconTheme: IconThemeData(color: Colors.white), // Set the icon color to white
       ),
+
       drawer: NavigationDrawerWidget(initialSelectedIndex: 0),
       body: _buildUI(),
     );
