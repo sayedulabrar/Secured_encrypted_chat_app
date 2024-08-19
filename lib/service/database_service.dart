@@ -126,48 +126,67 @@ class DatabaseService {
   }
 
 
-  Future<void> signupWithRole(String email, String password, String role,String? selectedDiv,
-      String? selectedUnit,String? selectedAppointment,File img) async {
-    User? adminUser = _firebaseAuth.currentUser;
-    String? adminEmail = adminUser?.email;
+  Future<void> signupWithRole(
+      String email,
+      String password,
+      String role,
+      String? selectedDiv,
+      String? selectedUnit,
+      String? selectedAppointment,
+      File img) async {
+    try {
+      User? adminUser = _firebaseAuth.currentUser;
+      String? adminEmail = adminUser?.email;
 
-    if (adminEmail != null) {
-      String? adminPassword = await _secureStorage.read(key: 'adminPassword');
+      if (adminEmail != null) {
+        String? adminPassword = await _secureStorage.read(key: 'adminPassword');
 
-      bool success = await signup(email, password);
-      if (success) {
-        // Get the newly created user's UID
-        String uid = _firebaseAuth.currentUser!.uid;
-        String? pfpURL = await _storageService.uploadUserPfp(
-          file: img, // Replace with your image file variable
-          uid: uid,
-        );
+        // Sign up the user
+        bool success = await signup(email, password);
+        if (success) {
+          // Get the newly created user's UID
+          String uid = _firebaseAuth.currentUser!.uid;
 
-        Profile newUser = Profile(
-          userid: uid,
-          email: email,
-          password: password,
-          role: role,
-          disabled: false,
-          pfpURL: pfpURL,
-          div:selectedDiv,
-          unit: selectedUnit,
-          appointment: selectedAppointment
-        );
-
-        await createUserProfile(user_profile: newUser);
-
-        if (adminPassword != null) {
-          AuthCredential adminCredential = EmailAuthProvider.credential(
-            email: adminEmail,
-            password: adminPassword,
+          // Upload profile picture
+          String? pfpURL = await _storageService.uploadUserPfp(
+            file: img,
+            uid: uid,
           );
-          _authService.user=adminUser;
-          await _firebaseAuth.signInWithCredential(adminCredential);
+
+          // Create user profile
+          Profile newUser = Profile(
+            userid: uid,
+            email: email,
+            password: password,
+            role: role,
+            disabled: false,
+            pfpURL: pfpURL,
+            div: selectedDiv,
+            unit: selectedUnit,
+            appointment: selectedAppointment,
+          );
+
+          await createUserProfile(user_profile: newUser);
+
+          if (adminPassword != null) {
+            AuthCredential adminCredential = EmailAuthProvider.credential(
+              email: adminEmail,
+              password: adminPassword,
+            );
+            _authService.user = adminUser;
+            await _firebaseAuth.signInWithCredential(adminCredential);
+          }
         }
       }
+    } catch (e) {
+      // Log the error or send it to a logging service
+      print('Error during signupWithRole: $e');
+
+      // Optionally, rethrow the exception or handle it as needed
+      throw e;
     }
   }
+
 
   Future<void> toggleUserStatus(String email) async {
     QuerySnapshot querySnapshot = await _userCollection

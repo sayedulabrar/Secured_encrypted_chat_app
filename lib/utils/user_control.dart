@@ -1,10 +1,10 @@
 import 'dart:io';
-
+import 'package:path_provider/path_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-
+import 'package:flutter/services.dart' show ByteData, Uint8List, rootBundle;
 import '../constant/consts.dart';
 import '../models/profile.dart';
 import '../service/alert_service.dart';
@@ -35,6 +35,7 @@ class _UserControlPageState extends State<UserControlPage> {
   String? _selectedUnit;
   String? _selectedAppointment;
   String _selectedRole='User' ;
+  late File imageFile;
 
   TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
@@ -59,22 +60,28 @@ class _UserControlPageState extends State<UserControlPage> {
     _databaseService = _getIt.get<DatabaseService>();
     _alertService = _getIt.get<AlertService>();
     _mediaService = _getIt.get<MediaService>();
+    Future.microtask(() async {
+      imageFile=await _loadAssetAsFile('assets/army.png');
+
+    });
+
   }
 
 
-  Future<void> _handleSignup(String selectedRole,String? selectedDiv,String? selectedUnit,
+
+  Future<void> _handleSignup(String email,String password,String selectedRole, String? selectedDiv, String? selectedUnit,
       String? selectedAppointment) async {
     setState(() {
       _isLoading = true; // Show loading indicator
     });
 
-    String email = _emailController.text + '@gmail.com';
-    String password = _passwordController.text;
+    // Prepare the image file
 
-    if (PASSWORD_VALIDATION_REGEX.hasMatch(password) &&
-        EMAIL_VALIDATION_REGEX.hasMatch(email)) {
-      await _databaseService.signupWithRole(email, password, selectedRole,selectedDiv,selectedUnit,selectedAppointment,selectedimage!);
-      _alertService.showToast(text: "Account created successfully");
+    if (selectedimage != null) {
+      imageFile = selectedimage!;
+    }
+      await _databaseService.signupWithRole(email, password, selectedRole, selectedDiv, selectedUnit,
+          selectedAppointment, imageFile);
 
       // Clear text fields
       _emailController.clear();
@@ -82,13 +89,23 @@ class _UserControlPageState extends State<UserControlPage> {
       setState(() {
         selectedimage = null;
       });
-    } else {
-      _alertService.showToast(text: "Follow correct pattern for password and email");
-    }
+
 
     setState(() {
       _isLoading = false; // Hide loading indicator
     });
+  }
+
+  Future<File> _loadAssetAsFile(String assetPath) async {
+    // Load asset as bytes
+    final ByteData data = await rootBundle.load(assetPath);
+    final Uint8List bytes = data.buffer.asUint8List();
+
+    // Create a temporary file
+    final tempFile = File('${(await getTemporaryDirectory()).path}/temp_image.png');
+    await tempFile.writeAsBytes(bytes);
+
+    return tempFile;
   }
 
 
@@ -391,7 +408,8 @@ class _UserControlPageState extends State<UserControlPage> {
                     print("I am pressed");
 
 
-
+                    String email = _emailController.text + '@gmail.com';
+                    String password = _passwordController.text;
                     String selectedRole1 = _selectedRole;
                     String? selectedDiv1 = _selectedDiv;
                     String? selectedUnit1 = _selectedUnit;
@@ -400,8 +418,9 @@ class _UserControlPageState extends State<UserControlPage> {
                     // Check if any of the required fields are null
                     if (selectedDiv1 != null &&
                         selectedUnit1 != null &&
-                        selectedAppointment1 != null) {
-                      await _handleSignup(selectedRole1, selectedDiv1, selectedUnit1, selectedAppointment1);
+                        selectedAppointment1 != null &&PASSWORD_VALIDATION_REGEX.hasMatch(password) &&
+                        EMAIL_VALIDATION_REGEX.hasMatch(email)) {
+                      await _handleSignup(email,password,selectedRole1, selectedDiv1, selectedUnit1, selectedAppointment1);
                       _alertService.showToast(text: "User created Successfully",icon: Icons.check_circle_outline);
                     } else {
                       _alertService.showToast(text: "Select the Army feature to continue....");
@@ -431,7 +450,7 @@ class _UserControlPageState extends State<UserControlPage> {
               radius: radius - 4, // Subtracting the border width
               backgroundImage: selectedimage != null
                   ? FileImage(selectedimage!)
-                  : NetworkImage(PLACEHOLDER_PFP) as ImageProvider,
+                  : FileImage(imageFile),
               backgroundColor: Colors.transparent,
             ),
           ),
