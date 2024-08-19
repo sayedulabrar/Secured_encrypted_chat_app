@@ -105,6 +105,26 @@ class _MapScreenState extends State<MapScreen> {
     return users;
   }
 
+  Future<void> _clearMaliciousUsers() async {
+    final firestore = FirebaseFirestore.instance;
+
+    // Get all documents in the malicious_users collection
+    QuerySnapshot querySnapshot = await firestore.collection('malicious_users').get();
+
+    // Delete each document
+    for (var doc in querySnapshot.docs) {
+      await firestore.collection('malicious_users').doc(doc.id).delete();
+    }
+
+    // Clear markers and user locations
+    setState(() {
+      _markers.clear();
+      _userLocations.clear();
+    });
+
+    // Reload the markers (this can be removed if you don't want to reload the data)
+    await _loadMarkers();
+  }
 
 
   Future<BitmapDescriptor> getBitmapDescriptorFromUrl(String url) async {
@@ -178,10 +198,12 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Malicious Users Map',style: TextStyle(color: Colors.white)),        backgroundColor: Colors.green, // Set the AppBar background color
+        title: Text('Malicious Users Map', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.green, // Set the AppBar background color
         iconTheme: IconThemeData(color: Colors.white),
-
       ),
+
+
       drawer: NavigationDrawerWidget(initialSelectedIndex: 3),
       body: Stack(
         children: [
@@ -228,6 +250,31 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
           ),
+          Positioned(
+            top: 10,
+            left: 2,
+            child: _userLocations.isNotEmpty?Container(
+              padding: EdgeInsets.symmetric(horizontal:0, vertical:0), // Add padding for better text appearance
+              decoration: BoxDecoration(
+                borderRadius:BorderRadius.circular(12) ,
+                color: Colors.redAccent, // Black background color for the circle
+              ),
+              child: TextButton(
+                onPressed: () {
+                  _clearMaliciousUsers(); // Call the function to clear and reload
+                },
+                child: Text(
+                  'Clean',
+                  style: TextStyle(
+                    color: Colors.white, // White text color for contrast
+                    fontSize: 16, // Adjust font size as needed
+                  ),
+                ),
+              ),
+            ):Container(),
+          ),
+
+
 
         ],
       ),

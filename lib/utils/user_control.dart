@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../constant/consts.dart';
+import '../models/profile.dart';
 import '../service/alert_service.dart';
 import '../service/database_service.dart';
 import '../service/media_service.dart';
@@ -34,6 +36,8 @@ class _UserControlPageState extends State<UserControlPage> {
   String? _selectedAppointment;
   String _selectedRole='User' ;
 
+  TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
 
 
   final List<String> userroles=['User','Admin'];
@@ -99,8 +103,32 @@ class _UserControlPageState extends State<UserControlPage> {
       appBar: AppBar(
         title: Text(
           _titles[_selectedIndex],
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white,fontSize: 20),
+
         ),
+        actions: [
+          _selectedIndex==0?
+          Container(
+            width: 150,
+            margin: EdgeInsets.fromLTRB(0, 5, 5, 5),
+
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+
+                hintText: 'Search...',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                prefixIcon: Icon(Icons.search),
+                filled: true, // Enables the fillColor property
+                fillColor: Colors.white,
+              ),
+            ),
+          ):Container(),
+
+        ],
         backgroundColor: Colors.green, // Set the AppBar background color
         iconTheme: IconThemeData(color: Colors.white), // Set the icon color to white
       ),
@@ -164,7 +192,158 @@ class _UserControlPageState extends State<UserControlPage> {
   }
 
   Widget _buildUserControlPage() {
-    return UserListWidget(firestore: FirebaseFirestore.instance, databaseService: _databaseService);
+     return StreamBuilder<QuerySnapshot>(
+      stream: _firestore.collection('users').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return Center(child: Text('No users found.'));
+        }
+
+        List<Profile> allusers = snapshot.data!.docs.map((doc) {
+          return Profile(
+            userid: doc['userid'],
+            email: doc['email'],
+            password: doc['password'],
+            role: doc['role'],
+            div: doc['div'] ?? "No Division Selected",
+            unit: doc['unit'] ?? "No Unit Selected",
+            appointment: doc['appointment'] ?? "No Appointment Selected",
+            disabled: doc['disabled'] ?? false,
+            pfpURL: doc['pfpURL'] ?? PLACEHOLDER_PFP,
+          );
+        }).toList();
+
+        List<Profile> users = allusers.where((user) {
+          return user.email.toLowerCase().contains(_searchQuery) ||
+              user.role.toLowerCase().contains(_searchQuery) ||
+              (user.div ?? '').toLowerCase().contains(_searchQuery) ||
+              (user.unit ?? '').toLowerCase().contains(_searchQuery) ||
+              (user.appointment ?? '').toLowerCase().contains(_searchQuery);
+        }).toList();
+
+        return ListView.builder(
+          itemCount: users.length,
+          itemBuilder: (context, index) {
+            Profile user = users[index];
+            return Card(
+              elevation: 6,
+              margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: user.disabled ? Colors.red : Colors.green,
+                          radius: 30.0,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            radius: 28.0,
+                            child: ClipOval(
+                              child: CachedNetworkImage(
+                                imageUrl: user.pfpURL!,
+                                placeholder: (context, url) => Image.asset(
+                                  'assets/loading.gif',
+                                  fit: BoxFit.cover,
+                                  width: 56.0,
+                                  height: 56.0,
+                                ),
+                                errorWidget: (context, url, error) => Icon(Icons.error),
+                                fit: BoxFit.cover,
+                                width: 56.0,
+                                height: 56.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              user.email.split('@')[0],
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              user.role,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        if (user.role == "User")
+                          IconButton(
+                            icon: Icon(Icons.delete, color: Colors.redAccent),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Confirm Disable Status'),
+                                    content: Text(
+                                        "Are you sure you want to change this user's disable status?"),
+                                    actions: [
+                                      TextButton(
+                                        child: Text('Cancel'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text('Confirm'),
+                                        onPressed: () {
+                                          _databaseService.toggleUserStatus(user.email);
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                      ],
+                    ),
+                    Divider(height: 30, color: Colors.grey[300]),
+                    Text(
+                      "Division: ${user.div}",
+                      style: TextStyle(fontSize: 16, color: Colors.black87),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      "Unit: ${user.unit}",
+                      style: TextStyle(fontSize: 16, color: Colors.black87),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      "Appointment: ${user.appointment}",
+                      style: TextStyle(fontSize: 16, color: Colors.black87),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   Widget _buildAddUserPage() {
