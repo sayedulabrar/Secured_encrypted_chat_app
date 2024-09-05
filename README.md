@@ -13,26 +13,27 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 
 | Log In Page                 |   | Home Page                  |   | Recent Chat                  |
 |-----------------------------|---|----------------------------|---|------------------------------|
-| ![login](assets/app_images/login.jpeg) |   | ![home](assets/app_images/home.jpeg) |   | ![recent_chat](assets/app_images/recent_chat.jpeg) |
+| ![login](assets/app_images/login2.jpeg) |   | ![home](assets/app_images/home.jpeg) |   | ![recent_chat](assets/app_images/recent_chat.jpeg) |
 ---
 <br><br>
 
 | Navbar For Admin                      |   | Navbar For User                |   | Profile                    |
 |-----------------------------|---|----------------------------|---|----------------------------|
-| ![navbar](assets/app_images/navbar.jpeg) |   | ![navbar_for_user](assets/app_images/navbar_for_user.jpeg) |   | ![profile](assets/app_images/profile.jpeg) |
+| ![navbar](assets/app_images/navbar2.jpeg) |   | ![navbar_for_user](assets/app_images/navbar_for_user.jpeg) |   | ![profile](assets/app_images/profile2.jpeg) |
 ---
 <br><br>
 
-| Updated Profile              |   | Update Profile Complete     |   | Change Password            |
-|------------------------------|---|-----------------------------|---|----------------------------|
-| ![updated_profile](assets/app_images/updated_profile.jpeg) |   | ![update_profile_complete](assets/app_images/update_profile_complete.jpeg) |   | ![change_password](assets/app_images/change_password.jpeg) |
+| Updated Profile              |   | Change Password            |   | User Details                |
+|------------------------------|---|----------------------------|---|-----------------------------|
+| ![updated_profile](assets/app_images/updated_profile2.jpeg) |   | ![change_password](assets/app_images/change_password.jpeg) |   | ![details_users](assets/app_images/details_users2.jpeg) |
 ---
 <br><br>
 
 | Add Users Page               |   | Add User Dialogue           |   | Change User Account's Availability |
 |------------------------------|---|-----------------------------|---|-----------------------------------|
-| ![Add_users_page](assets/app_images/Add_users_page.jpeg) |   | ![Add_user_dialogue](assets/app_images/Add_user_dialogue.jpeg) |   | ![change_user_role](assets/app_images/change_user_role.jpeg) |
+| ![Add_users_page](assets/app_images/Add_users_page2.jpeg) |   | ![Add_user_dialogue](assets/app_images/Add_user_dialogue.jpeg) |   | ![change_user_role](assets/app_images/change_user_role.jpeg) |
 ---
+
 <br><br>
 
 | Disabled User Trying to Login |   | Date Key                     |   | Chat Date Pick              |
