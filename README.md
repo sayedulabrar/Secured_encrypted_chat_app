@@ -2,7 +2,7 @@
 
 ## 📥 Download the Final App
 
-To download the final version of **SecureChat**, check the **finalapp** folder.
+To download the final version of **SecureChat**, check the **final app** folder.
 
 
 Welcome to **SecureChat** - the most robust, feature-rich, and secure chat application designed to keep your conversations private and your data safe. Dive into a world where your messages are shielded from prying eyes, and enjoy a seamless communication experience with cutting-edge features!
@@ -29,11 +29,10 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 ---
 <br><br>
 
-| Add Users Page               |   | Add User Dialogue           |   | Change User Account's Availability |
-|------------------------------|---|-----------------------------|---|-----------------------------------|
-| ![Add_users_page](assets/app_images/Add_users_page2.jpeg) |   | ![Add_user_dialogue](assets/app_images/Add_user_dialogue.jpeg) |   | ![change_user_role](assets/app_images/change_user_role.jpeg) |
+| Add Users Page               |   | Change User Account's Availability |   | |
+|------------------------------|---|-----------------------------------|---|---|
+| ![Add_users_page](assets/app_images/Add_users_page2.jpeg) |   | ![change_user_role](assets/app_images/change_user_role.jpeg) |   |   |
 ---
-
 <br><br>
 
 | Disabled User Trying to Login |   | Date Key                     |   | Chat Date Pick              |
@@ -70,7 +69,6 @@ Welcome to **SecureChat** - the most robust, feature-rich, and secure chat appli
 |------------------------------|---|-------------------------------|---|----------------------------|
 | ![no_malicious_user](assets/app_images/No_malicious_user.jpeg) |   | ![malicious_user_found_1](assets/app_images/Malicious_user_found_1.jpeg) |   | ![malicious_user_found_2](assets/app_images/Malicious_user_found_2.jpeg) |
 <br>
-
 
 ## 🔒 Key Features
 
